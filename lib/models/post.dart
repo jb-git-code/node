@@ -7,6 +7,6 @@ class Post {
   final DateTime createdAt;
   final Map<String, dynamic> metaData;
 
-  Post({required this.postId ,required this.authorId , required this.authorName , required this.collegeId , required this.createdAt , required this.isGlobal , required this.metaData});
+  Post({ required this.postId ,required this.authorId , required this.authorName , required this.collegeId , required this.createdAt , required this.isGlobal , required this.metaData });
 
 }
