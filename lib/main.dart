@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/firebase_options.dart';
 import 'package:node/providers/theme_provider.dart';
+import 'package:node/screens/app.dart';
 import 'package:node/screens/home.dart';
 import 'package:node/screens/login.dart';
 import 'package:node/screens/signup.dart';
@@ -29,7 +30,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       darkTheme: ThemeData.dark(),
       themeMode: (themeValue) ? ThemeMode.light : ThemeMode.dark,
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: App(),
     );
   }
 }
