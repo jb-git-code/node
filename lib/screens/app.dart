@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/providers/theme_provider.dart';
+import 'package:node/screens/compose.dart';
 import 'package:node/screens/home.dart';
 
 class App extends ConsumerStatefulWidget {
@@ -12,7 +13,7 @@ class App extends ConsumerStatefulWidget {
 }
 
 class _AppState extends ConsumerState<App> {
-  int _currentIndex = 1;
+  int _currentIndex = 0;
 
   void changeTab(int index) {
     setState(() {
@@ -24,9 +25,10 @@ class _AppState extends ConsumerState<App> {
   Widget build(BuildContext context) {
     final themeValue = ref.watch(darkThemeProvider);
     return Scaffold(
+      // extendBody: true,
       appBar: AppBar(
         title: Text('Node'),
-        centerTitle: true,
+        centerTitle: false,
         actions: [
           IconButton(
             onPressed: () {
@@ -37,25 +39,24 @@ class _AppState extends ConsumerState<App> {
         ],
       ),
       body: BottomBar(
-        layout: const BottomBarLayout.adaptive(maxWidth: 420),
+        layout: const BottomBarLayout.adaptive(maxWidth: 300),
         body: IndexedStack(
           index: _currentIndex,
-          children: [HomeScreen(), HomeScreen(), HomeScreen()],
+          children: [HomeScreen(), HomeScreen(), ComposeBlog(), HomeScreen()],
         ),
         child: Container(
-          width: 100,
-          // margin: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
           decoration: BoxDecoration(
             color: Colors.black,
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(28),
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadiusGeometry.circular(28),
             child: BottomNavigationBar(
               currentIndex: _currentIndex,
               onTap: (index) {
                 changeTab(index);
               },
+
               backgroundColor: Colors.transparent,
               selectedItemColor: Colors.lightGreenAccent,
               unselectedItemColor: Colors.white,
@@ -68,6 +69,10 @@ class _AppState extends ConsumerState<App> {
                 BottomNavigationBarItem(
                   icon: Icon(Icons.group),
                   label: 'Mentor',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.note_alt),
+                  label: 'Compose',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.person_outline_outlined),

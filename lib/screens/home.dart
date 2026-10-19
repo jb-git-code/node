@@ -16,47 +16,54 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final themeValue = ref.watch(darkThemeProvider);
     final postPro = ref.watch(postProvider);
-    return postPro.when(
-      data: (post) {
-        return Scaffold(
-          body: ListView.builder(
-            itemCount: post.length,
-            itemBuilder: (context, index) {
-              final postItem = post[index];
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.deepPurpleAccent,
-                  ),
-                  height: 300,
-                  width: 350,
-                  child: Center(
-                    child: Text(
-                      postItem.authorName,
-                      style: TextStyle(color: Colors.white),
+    return RefreshIndicator(
+      onRefresh: () async {
+        ref.invalidate(postProvider);
+        await ref.read(postProvider.future);
+      },
+      child: postPro.when(
+        skipLoadingOnRefresh: false,
+        data: (post) {
+          return Scaffold(
+            body: ListView.builder(
+              itemCount: post.length,
+              itemBuilder: (context, index) {
+                final postItem = post[index];
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.green,
+                    ),
+                    height: 300,
+                    width: 350,
+                    child: Center(
+                      child: Text(
+                        postItem.authorName,
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
-          ),
-        );
-      },
-      error: (err, stack) => Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('Failed to load: $err'),
-            ElevatedButton(
-              onPressed: () => ref.refresh(postProvider),
-              child: const Text('Retry'),
+                );
+              },
             ),
-          ],
+          );
+        },
+        error: (err, stack) => Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Failed to load: $err'),
+              ElevatedButton(
+                onPressed: () => ref.refresh(postProvider),
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
         ),
+        loading: () => Center(child: CircularProgressIndicator()),
       ),
-      loading: () => Center(child: CircularProgressIndicator()),
     );
   }
 }
