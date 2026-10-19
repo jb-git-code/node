@@ -35,11 +35,13 @@ class SignupScreen extends StatelessWidget {
                 'Register!',
                 style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 40),
               TextField(
                 controller: _email,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   hintText: 'Email',
                 ),
               ),
@@ -47,11 +49,13 @@ class SignupScreen extends StatelessWidget {
               TextField(
                 controller: _pass,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   hintText: 'Password',
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: register,
                 child: Text('Signup', style: TextStyle(fontSize: 24)),

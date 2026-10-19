@@ -3,7 +3,9 @@ import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/providers/theme_provider.dart';
 import 'package:node/screens/compose.dart';
+import 'package:node/screens/explore.dart';
 import 'package:node/screens/home.dart';
+import 'package:node/screens/profile.dart';
 
 class App extends ConsumerStatefulWidget {
   const App({super.key});
@@ -42,11 +44,16 @@ class _AppState extends ConsumerState<App> {
         layout: const BottomBarLayout.adaptive(maxWidth: 300),
         body: IndexedStack(
           index: _currentIndex,
-          children: [HomeScreen(), HomeScreen(), ComposeBlog(), HomeScreen()],
+          children: [
+            HomeScreen(),
+            ExploreScreen(),
+            ComposeBlog(),
+            ProfileScreen(),
+          ],
         ),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.black,
+            color: Colors.grey[800],
             borderRadius: BorderRadius.circular(28),
           ),
           child: ClipRRect(
