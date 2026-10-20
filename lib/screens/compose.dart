@@ -1,3 +1,4 @@
+import 'package:amicons/amicons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -64,12 +65,18 @@ class _ComposeBlogState extends State<ComposeBlog> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 600,
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
+              Text(
+                'Share Experience, Connect a node',
+                style: TextStyle(fontSize: 40),
+              ),
+              const SizedBox(height: 20),
               Row(
                 children: [
                   Expanded(
@@ -79,11 +86,12 @@ class _ComposeBlogState extends State<ComposeBlog> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
+                        hintText: 'Title',
                       ),
                     ),
                   ),
-                  const SizedBox(width: 20),
-                  TextButton(
+                  const SizedBox(width: 10),
+                  TextButton.icon(
                     style: ButtonStyle(
                       backgroundColor: WidgetStatePropertyAll(
                         Colors.lightGreenAccent,
@@ -91,7 +99,8 @@ class _ComposeBlogState extends State<ComposeBlog> {
                       foregroundColor: WidgetStatePropertyAll(Colors.black),
                     ),
                     onPressed: addNode,
-                    child: Text('Node'),
+                    label: Text('Node'),
+                    icon: Icon(Amicons.flaticon_navigation_rounded_fill),
                   ),
                 ],
               ),
@@ -102,6 +111,7 @@ class _ComposeBlogState extends State<ComposeBlog> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
+                  hintText: 'Description',
                 ),
               ),
               const SizedBox(height: 20),

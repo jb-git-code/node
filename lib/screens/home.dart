@@ -14,7 +14,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final themeValue = ref.watch(darkThemeProvider);
     final postPro = ref.watch(postProvider);
     return RefreshIndicator(
       onRefresh: () async {
@@ -33,15 +32,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   padding: const EdgeInsets.all(16.0),
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.white,
                     ),
                     height: 300,
                     width: 350,
                     child: Center(
                       child: Text(
                         postItem.authorName,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.black),
                       ),
                     ),
                   ),

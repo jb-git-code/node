@@ -1,3 +1,4 @@
+import 'package:amicons/amicons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -72,17 +73,20 @@ class _AppState extends ConsumerState<App> {
               showUnselectedLabels: false,
               type: BottomNavigationBarType.fixed,
               items: const [
-                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.group),
+                  icon: Icon(Amicons.flaticon_home_rounded),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Amicons.vuesax_command_square_fill),
                   label: 'Mentor',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.note_alt),
+                  icon: Icon(Amicons.flaticon_chart_network_rounded),
                   label: 'Compose',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.person_outline_outlined),
+                  icon: Icon(Amicons.iconly_profile_curved),
                   label: 'Profile',
                 ),
               ],
