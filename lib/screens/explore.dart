@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/models/post.dart';
 import 'package:node/providers/posts_provider.dart';
+import 'package:node/widgets/blog_card.dart';
 
 class ExploreScreen extends ConsumerStatefulWidget {
   const ExploreScreen({super.key});
@@ -42,19 +43,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                 child: ListView.builder(
                   itemCount: data.length,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Card(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.white,
-                          ),
-                          width: MediaQuery.of(context).size.width * .90,
-                          height: 300,
-                        ),
-                      ),
-                    );
+                    return BlogCard(post: data[index]);
                   },
                 ),
               );

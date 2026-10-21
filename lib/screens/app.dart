@@ -29,18 +29,7 @@ class _AppState extends ConsumerState<App> {
     final themeValue = ref.watch(darkThemeProvider);
     return Scaffold(
       // extendBody: true,
-      appBar: AppBar(
-        title: Text('Node'),
-        centerTitle: false,
-        actions: [
-          IconButton(
-            onPressed: () {
-              ref.read(darkThemeProvider.notifier).state = !themeValue;
-            },
-            icon: (themeValue) ? Icon(Icons.dark_mode) : Icon(Icons.light_mode),
-          ),
-        ],
-      ),
+      appBar: AppBar(title: Text('Node'), centerTitle: false),
       body: BottomBar(
         layout: const BottomBarLayout.adaptive(maxWidth: 300),
         body: IndexedStack(
@@ -86,7 +75,7 @@ class _AppState extends ConsumerState<App> {
                   label: 'Compose',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Amicons.iconly_profile_curved),
+                  icon: Icon(Amicons.iconly_profile_sharp_fill),
                   label: 'Profile',
                 ),
               ],

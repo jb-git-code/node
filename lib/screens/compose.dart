@@ -29,13 +29,6 @@ class _ComposeBlogState extends State<ComposeBlog> {
   final TextEditingController _title = TextEditingController();
   final TextEditingController _des = TextEditingController();
 
-  @override
-  void dispose() {
-    super.dispose();
-    _title.dispose();
-    _des.dispose();
-  }
-
   void addNode() async {
     try {
       final newPost = Post(
@@ -63,6 +56,13 @@ class _ComposeBlogState extends State<ComposeBlog> {
   String? selectedCategory;
 
   @override
+  void dispose() {
+    super.dispose();
+    _title.dispose();
+    _des.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       height: 600,
@@ -82,6 +82,7 @@ class _ComposeBlogState extends State<ComposeBlog> {
                   Expanded(
                     child: TextField(
                       // maxLength: 40,
+                      controller: _title,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
@@ -106,6 +107,7 @@ class _ComposeBlogState extends State<ComposeBlog> {
               ),
               const SizedBox(height: 20),
               TextField(
+                controller: _des,
                 maxLines: 15,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(

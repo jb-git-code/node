@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/providers/posts_provider.dart';
 import 'package:node/providers/theme_provider.dart';
+import 'package:node/widgets/blog_card.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -24,28 +25,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         skipLoadingOnRefresh: false,
         data: (post) {
           return Scaffold(
-            body: ListView.builder(
-              itemCount: post.length,
-              itemBuilder: (context, index) {
-                final postItem = post[index];
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.white,
-                    ),
-                    height: 300,
-                    width: 350,
-                    child: Center(
-                      child: Text(
-                        postItem.authorName,
-                        style: TextStyle(color: Colors.black),
-                      ),
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Center(
+                    child: Text(
+                      'See all the latest nodes',
+                      style: TextStyle(fontSize: 40),
                     ),
                   ),
-                );
-              },
+                  const SizedBox(height: 20),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: post.length,
+                      itemBuilder: (context, index) {
+                        final postItem = post[index];
+                        return BlogCard(post: postItem);
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },
