@@ -1,5 +1,6 @@
 import 'package:amicons/amicons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/providers/theme_provider.dart';
@@ -19,6 +20,7 @@ class _AppState extends ConsumerState<App> {
   int _currentIndex = 0;
 
   void changeTab(int index) {
+    HapticFeedback.selectionClick();
     setState(() {
       _currentIndex = index;
     });
@@ -29,7 +31,16 @@ class _AppState extends ConsumerState<App> {
     final themeValue = ref.watch(darkThemeProvider);
     return Scaffold(
       // extendBody: true,
-      appBar: AppBar(title: Text('Node'), centerTitle: false),
+      appBar: AppBar(
+        title: Text('Node'),
+        centerTitle: false,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Amicons.iconly_notification_2_sharp_fill),
+          ),
+        ],
+      ),
       body: BottomBar(
         layout: const BottomBarLayout.adaptive(maxWidth: 300),
         body: IndexedStack(

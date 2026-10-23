@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/providers/posts_provider.dart';
 import 'package:node/providers/theme_provider.dart';
 import 'package:node/widgets/blog_card.dart';
+import 'package:node/widgets/expand_blog_card.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -29,9 +30,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  Center(
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12, right: 12),
                     child: Text(
-                      'See all the latest nodes',
+                      'Catch all the latest nodes!',
                       style: TextStyle(fontSize: 40),
                     ),
                   ),
@@ -41,7 +43,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       itemCount: post.length,
                       itemBuilder: (context, index) {
                         final postItem = post[index];
-                        return BlogCard(post: postItem);
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ExpandBlogCard(post: postItem),
+                              ),
+                            );
+                          },
+                          child: BlogCard(post: postItem ),
+                        );
                       },
                     ),
                   ),

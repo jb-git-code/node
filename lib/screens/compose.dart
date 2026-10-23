@@ -1,10 +1,12 @@
 import 'package:amicons/amicons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:node/models/post.dart';
 import 'package:node/screens/app.dart';
 import 'package:node/screens/home.dart';
+import 'package:uuid/uuid.dart';
 
 class ComposeBlog extends StatefulWidget {
   ComposeBlog({super.key});
@@ -29,11 +31,18 @@ class _ComposeBlogState extends State<ComposeBlog> {
   final TextEditingController _title = TextEditingController();
   final TextEditingController _des = TextEditingController();
 
+  bool isUploading = false;
+
   void addNode() async {
     try {
+      final psid = Uuid().v4();
+      final user = FirebaseAuth.instance.currentUser;
+      isUploading = true;
+      Future.delayed(Duration(microseconds: 1000));
+      if (user == null) return;
       final newPost = Post(
-        postId: "18",
-        authorId: "001",
+        postId: psid,
+        authorId: 'jayanshub18@gmail.com',
         authorName: 'Jayanshu',
         collegeId: "iiitbh",
         createdAt: DateTime.now(),
@@ -42,10 +51,17 @@ class _ComposeBlogState extends State<ComposeBlog> {
         description: _des.text,
         metaData: {},
         category: selectedCategory!,
+        stars: 0,
+        isStarredBy: <String>[],
       );
+
       await FirebaseFirestore.instance
           .collection('blogs')
-          .add(Post.toFirestore(newPost));
+          .doc(psid)
+          .set((Post.toFirestore(newPost)));
+      setState(() {
+        isUploading = false;
+      });
       Navigator.push(context, MaterialPageRoute(builder: (context) => App()));
       print('post Added');
     } catch (e) {
@@ -101,7 +117,9 @@ class _ComposeBlogState extends State<ComposeBlog> {
                     ),
                     onPressed: addNode,
                     label: Text('Node'),
-                    icon: Icon(Amicons.flaticon_navigation_rounded_fill),
+                    icon: (!isUploading)
+                        ? Icon(Amicons.flaticon_navigation_rounded_fill)
+                        : CircularProgressIndicator(),
                   ),
                 ],
               ),

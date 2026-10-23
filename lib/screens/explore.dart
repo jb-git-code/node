@@ -5,7 +5,7 @@ import 'package:node/providers/posts_provider.dart';
 import 'package:node/widgets/blog_card.dart';
 
 class ExploreScreen extends ConsumerStatefulWidget {
-  const ExploreScreen({super.key});
+  const ExploreScreen({super.key });
 
   @override
   ConsumerState<ExploreScreen> createState() => _ExploreScreenState();
