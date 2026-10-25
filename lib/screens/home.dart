@@ -27,7 +27,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         data: (post) {
           return Scaffold(
             body: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(
+                left: 8,
+                right: 8,
+                bottom: 60,
+                top: 8,
+              ),
               child: Column(
                 children: [
                   Padding(
@@ -53,7 +58,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               ),
                             );
                           },
-                          child: BlogCard(post: postItem ),
+                          child: BlogCard(
+                            key: ValueKey(
+                              '${post[index].postId}_${post[index].isStarredBy.length}_${post[index].isSavedBy.length}',
+                            ),
+                            post: postItem,
+                          ),
                         );
                       },
                     ),

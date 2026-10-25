@@ -5,7 +5,7 @@ import 'package:node/providers/posts_provider.dart';
 import 'package:node/widgets/blog_card.dart';
 
 class ExploreScreen extends ConsumerStatefulWidget {
-  const ExploreScreen({super.key });
+  const ExploreScreen({super.key});
 
   @override
   ConsumerState<ExploreScreen> createState() => _ExploreScreenState();
@@ -13,7 +13,6 @@ class ExploreScreen extends ConsumerStatefulWidget {
 
 class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   final List<String> _categories = ["Tech", "Placement", "Share", "Exp"];
-  // String? selectedCategory;
   List<Post> allPost = [];
   void _toggleCategory(String cat) {
     final current = ref.read(selectedCategoryProvider);
@@ -32,18 +31,23 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
     final filterPosts = ref.watch(filterListProvider);
 
     return Padding(
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.only(left: 8, right: 8, bottom: 60, top: 8),
       child: Column(
         children: [
           buildCategories(context),
           const SizedBox(height: 20),
           filterPosts.when(
-            data: (data) {
+            data: (post) {
               return Expanded(
                 child: ListView.builder(
-                  itemCount: data.length,
+                  itemCount: post.length,
                   itemBuilder: (context, index) {
-                    return BlogCard(post: data[index]);
+                    return BlogCard(
+                      key: ValueKey(
+                        '${post[index].postId}_${post[index].isStarredBy.length}_${post[index].isSavedBy.length}',
+                      ),
+                      post: post[index],
+                    );
                   },
                 ),
               );

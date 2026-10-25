@@ -3,11 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:node/models/post.dart';
 
-final postProvider = FutureProvider<List<Post>>((ref) async {
-  final queryPost = await FirebaseFirestore.instance.collection('blogs').get();
-  final posts = queryPost.docs;
-  return posts.map(((e) => Post.fromFirestore(e))).toList();
-});
 
 final selectedCategoryProvider = StateProvider<String?>((ref) => null);
 
@@ -18,5 +13,12 @@ final filterListProvider = Provider<AsyncValue<List<Post>>>((ref) {
   return postAsync.whenData((posts) {
     if (selectedCategory == null || selectedCategory.isEmpty) return posts;
     return posts.where((e) => e.category == selectedCategory).toList();
+  });
+});
+
+final postProvider = StreamProvider<List<Post>>((ref) {
+  final snaps = FirebaseFirestore.instance.collection('blogs').snapshots();
+  return snaps.map((snapshot) {
+    return snapshot.docs.map((e) => Post.fromFirestore(e)).toList();
   });
 });

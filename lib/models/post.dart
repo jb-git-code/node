@@ -11,8 +11,8 @@ class Post {
   final DateTime createdAt;
   final Map<String, dynamic>? metaData;
   final String category;
-  final int stars;
   final List<String> isStarredBy;
+  final List<String> isSavedBy;
 
   Post({
     required this.postId,
@@ -25,8 +25,8 @@ class Post {
     required this.isGlobal,
     required this.metaData,
     required this.category,
-    required this.stars,
     required this.isStarredBy,
+    required this.isSavedBy,
   });
 
   factory Post.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
@@ -42,8 +42,8 @@ class Post {
       isGlobal: data['isGlobal'] ?? false,
       metaData: Map<String, dynamic>.from(data['metaData'] ?? {}),
       category: data['category'],
-      stars: data['stars'],
-      isStarredBy: List<String>.from(data['tags'] ?? []),
+      isStarredBy: List<String>.from(data['isStarredBy'] ?? []),
+      isSavedBy: List<String>.from(data['isSavedBy'] ?? []),
     );
   }
 
@@ -59,8 +59,8 @@ class Post {
       'isGlobal': post.isGlobal,
       'metaData': post.metaData,
       'category': post.category,
-      'stars': post.stars,
       'isStarredBy': post.isStarredBy,
+      'isSavedBy': post.isSavedBy,
     };
   }
 }

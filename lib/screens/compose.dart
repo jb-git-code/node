@@ -51,8 +51,8 @@ class _ComposeBlogState extends State<ComposeBlog> {
         description: _des.text,
         metaData: {},
         category: selectedCategory!,
-        stars: 0,
         isStarredBy: <String>[],
+        isSavedBy: <String>[],
       );
 
       await FirebaseFirestore.instance

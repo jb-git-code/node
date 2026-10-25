@@ -1,42 +1,30 @@
 import 'package:amicons/amicons.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/models/post.dart';
+import 'package:node/services/firebase_service.dart';
 
-class BlogCard extends StatefulWidget {
+class BlogCard extends ConsumerStatefulWidget {
   final Post post;
   const BlogCard({super.key, required this.post});
 
   @override
-  State<BlogCard> createState() => _BlogCardState();
+  ConsumerState<BlogCard> createState() => _BlogCardState();
 }
 
-class _BlogCardState extends State<BlogCard> {
-  void _toggleStars(String psid, bool isStarred) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
-    final postRef = FirebaseFirestore.instance.collection('blogs').doc(psid);
-    try {
-      if (isStarred) {
-        await postRef.update({
-          'stars': FieldValue.increment(-1),
-          'isStarredBy': FieldValue.arrayRemove([user.uid]),
-        });
-      } else {
-        await postRef.update({
-          'stars': FieldValue.increment(1),
-          'isStarredBy': FieldValue.arrayUnion([user.uid]),
-        });
-      }
-    } catch (e) {
-      throw e.toString();
-    }
-  }
+class _BlogCardState extends ConsumerState<BlogCard> {
+  bool isUploading = false;
+
+  bool isSaving = false;
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+    final bool isSaved =
+        user != null && widget.post.isSavedBy.contains(user.uid);
+    final bool isStarred =
+        user != null && widget.post.isStarredBy.contains(user.uid);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -80,23 +68,60 @@ class _BlogCardState extends State<BlogCard> {
                   Row(
                     children: [
                       IconButton(
-                        onPressed: () {
-                          final user = FirebaseAuth.instance.currentUser;
-                          final isStarred =
-                              user != null &&
-                              widget.post.isStarredBy.contains(user.uid);
-                          _toggleStars(widget.post.postId, isStarred);
-                        },
-                        icon: Icon(Amicons.iconly_star_2_sharp_fill),
+                        onPressed: isUploading || user == null
+                            ? null
+                            : () async {
+                                setState(() {
+                                  isUploading = true;
+                                });
+                                try {
+                                  final bool isStarred = widget.post.isStarredBy
+                                      .contains(user.uid);
+                                  await FirebaseService().toggleStars(
+                                    widget.post.postId,
+                                    isStarred,
+                                  );
+                                } finally {
+                                  if (mounted) {
+                                    setState(() {
+                                      isUploading = false;
+                                    });
+                                  }
+                                }
+                              },
+                        icon: Icon(
+                          isStarred
+                              ? Amicons.remix_star_fill
+                              : Amicons.remix_star,
+                        ),
                       ),
-
-                      Text(widget.post.stars.toString()),
+                      Text(widget.post.isStarredBy.length.toString()),
                     ],
                   ),
                   const SizedBox(width: 10),
                   IconButton(
-                    onPressed: () {},
-                    icon: Icon(Amicons.lucide_square_chevron_down),
+                    onPressed: isSaving || user == null
+                        ? null
+                        : () async {
+                            setState(() {
+                              isSaving = true;
+                            });
+                            try {
+                              await FirebaseService().toggleSave(
+                                widget.post.postId,
+                              );
+                            } finally {
+                              if (mounted) {
+                                setState(() {
+                                  isSaving = false;
+                                });
+                              }
+                            }
+                          },
+                    icon: Icon(
+                      isSaved ? Icons.bookmark : Icons.bookmark_border,
+                      color: isSaved ? Colors.black : Colors.black54,
+                    ),
                   ),
                 ],
               ),

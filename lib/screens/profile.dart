@@ -26,7 +26,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final currentMode = ref.watch(themeModeProvider);
     return Padding(
       padding: EdgeInsetsGeometry.all(16),
       child: Column(
@@ -46,29 +45,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          // SegmentedButton<ThemeMode>(
-          //   segments: const [
-          //     ButtonSegment(
-          //       value: ThemeMode.system,
-          //       icon: Icon(Icons.brightness_auto),
-          //       label: Text('System'),
-          //     ),
-          //     ButtonSegment(
-          //       value: ThemeMode.light,
-          //       icon: Icon(Icons.light_mode),
-          //       label: Text('Light'),
-          //     ),
-          //     ButtonSegment(
-          //       value: ThemeMode.dark,
-          //       icon: Icon(Icons.dark_mode),
-          //       label: Text('Dark'),
-          //     ),
-          //   ],
-          //   selected: {currentMode},
-          //   onSelectionChanged: (Set<ThemeMode> newSelection) {
-          //     ref.read(themeModeProvider.notifier).state = newSelection.first;
-          //   },
-          // ),
           ThemeSlider(),
           const SizedBox(height: 20),
           GestureDetector(

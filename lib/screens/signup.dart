@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -15,7 +14,6 @@ class SignupScreen extends StatelessWidget {
         email: _email.text,
         password: _pass.text,
       );
-      print('user registered');
     } catch (e) {
       throw e.toString();
     }
