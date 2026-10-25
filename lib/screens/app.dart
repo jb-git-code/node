@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:node/providers/count_provider.dart';
 import 'package:node/providers/theme_provider.dart';
 import 'package:node/screens/compose.dart';
 import 'package:node/screens/explore.dart';
@@ -20,6 +21,11 @@ class _AppState extends ConsumerState<App> {
   int _currentIndex = 0;
 
   void changeTab(int index) {
+    if (index == 3) {
+      ref.invalidate(createdPostsCountProvider);
+      ref.invalidate(savedPostsCountProvider);
+      ref.invalidate(totalStarsEarnedProvider);
+    }
     HapticFeedback.selectionClick();
     setState(() {
       _currentIndex = index;

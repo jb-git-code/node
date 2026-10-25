@@ -42,8 +42,8 @@ class _ComposeBlogState extends State<ComposeBlog> {
       if (user == null) return;
       final newPost = Post(
         postId: psid,
-        authorId: 'jayanshub18@gmail.com',
-        authorName: 'Jayanshu',
+        authorId: user.uid,
+        authorName: user.displayName ?? 'Unknown',
         collegeId: "iiitbh",
         createdAt: DateTime.now(),
         isGlobal: false,

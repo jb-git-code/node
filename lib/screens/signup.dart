@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:node/screens/app.dart';
+import 'package:node/screens/login.dart';
 
 class SignupScreen extends StatelessWidget {
   SignupScreen({super.key});
@@ -8,11 +10,16 @@ class SignupScreen extends StatelessWidget {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _pass = TextEditingController();
 
-  Future<void> register() async {
+  Future<void> register(BuildContext context) async {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _email.text,
         password: _pass.text,
+      );
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (conext) => App()),
+        (route) => false,
       );
     } catch (e) {
       throw e.toString();
@@ -55,7 +62,9 @@ class SignupScreen extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               ElevatedButton(
-                onPressed: register,
+                onPressed: () {
+                  register(context);
+                },
                 child: Text('Signup', style: TextStyle(fontSize: 24)),
               ),
               const SizedBox(height: 20),
@@ -64,7 +73,16 @@ class SignupScreen extends StatelessWidget {
                   Spacer(),
                   Text('Already have an account'),
                   const SizedBox(width: 20),
-                  GestureDetector(onTap: () {}, child: Text('Login')),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (conext) => LoginScreen()),
+                        (route) => false,
+                      );
+                    },
+                    child: Text('Login'),
+                  ),
                   Spacer(),
                 ],
               ),

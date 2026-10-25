@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:node/screens/app.dart';
 import 'package:node/screens/home.dart';
+import 'package:node/screens/signup.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -9,13 +11,13 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _pass = TextEditingController();
 
-  Future<void> login() async {
+  Future<void> login(BuildContext context) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _email.text,
         password: _pass.text,
       );
-      print('user logged in');
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (conext) => App()) , (route) => false);
     } catch (e) {
       throw e.toString();
     }
@@ -57,7 +59,9 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               ElevatedButton(
-                onPressed: login,
+                onPressed: () {
+                  login(context);
+                },
                 child: Text('Login', style: TextStyle(fontSize: 24)),
               ),
               const SizedBox(height: 20),
@@ -66,7 +70,16 @@ class LoginScreen extends StatelessWidget {
                   Spacer(),
                   Text('Don\'t have an account'),
                   const SizedBox(width: 20),
-                  GestureDetector(onTap: () {}, child: Text('Register')),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (conext) => SignupScreen()),
+                        (route) => false,
+                      );
+                    },
+                    child: Text('Register'),
+                  ),
                   Spacer(),
                 ],
               ),

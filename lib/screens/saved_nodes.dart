@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:node/models/post.dart';
+import 'package:node/widgets/blog_card.dart';
+import 'package:node/widgets/expand_blog_card.dart';
 
 class SavedNodes extends StatelessWidget {
   const SavedNodes({super.key});
@@ -32,11 +35,24 @@ class SavedNodes extends StatelessWidget {
           return ListView.builder(
             itemCount: docs.length,
             itemBuilder: (context, index) {
-              final data = docs[index].data();
+              final data = docs[index];
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Card(
-                  child: ListTile(title: Text(data['title'] ?? 'No Title')),
+                  child: GestureDetector(
+                    onTap: () {
+                      final post = Post.fromFirestore(data);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ExpandBlogCard(post: post),
+                        ),
+                      );
+                    },
+                    child: ListTile(
+                      title: Text(data.data()['title'] ?? 'No Title'),
+                    ),
+                  ),
                 ),
               );
             },
