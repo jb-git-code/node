@@ -2,6 +2,7 @@ import 'package:amicons/amicons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/providers/theme_provider.dart';
+import 'package:node/screens/saved_nodes.dart';
 import 'package:node/widgets/theme_slider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -46,6 +47,31 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ),
           const SizedBox(height: 20),
           ThemeSlider(),
+          const SizedBox(height: 20),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SavedNodes()),
+              );
+            },
+            child: Container(
+              height: 60,
+              width: MediaQuery.of(context).size.width * .90,
+              decoration: BoxDecoration(
+                color: Color(0xFFA2D788),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Row(
+                children: [
+                  const SizedBox(width: 20),
+                  Icon(Amicons.remix_information, color: Colors.black),
+                  const SizedBox(width: 10),
+                  Text('Saved Nodes', style: TextStyle(color: Colors.black)),
+                ],
+              ),
+            ),
+          ),
           const SizedBox(height: 20),
           GestureDetector(
             onTap: openAbout,
