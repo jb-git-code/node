@@ -3,9 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:node/models/post.dart';
-import 'package:node/screens/app.dart';
-import 'package:node/screens/home.dart';
+import 'package:node/shared/models/post.dart';
+import 'package:node/app.dart';
+import 'package:node/features/feed/home.dart';
 import 'package:uuid/uuid.dart';
 
 class ComposeBlog extends StatefulWidget {

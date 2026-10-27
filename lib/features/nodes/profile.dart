@@ -2,15 +2,15 @@ import 'package:amicons/amicons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:node/providers/count_provider.dart';
-import 'package:node/providers/theme_provider.dart';
-import 'package:node/screens/login.dart';
-import 'package:node/screens/saved_nodes.dart';
-import 'package:node/widgets/theme_slider.dart';
+import 'package:node/features/feed/providers/count_provider.dart';
+import 'package:node/core/themes/providers/theme_provider.dart';
+import 'package:node/features/auth/login.dart';
+import 'package:node/features/nodes/saved_nodes.dart';
+import 'package:node/shared/widgets/theme_slider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
-  ProfileScreen({super.key});
+  const ProfileScreen({super.key});
 
   @override
   ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
@@ -79,7 +79,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Text('@userID000'),
+                      Text('@userID000', style: TextStyle(color: Colors.black)),
                     ],
                   ),
                 ),
@@ -126,7 +126,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               'Stars Earned       ',
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Color.fromARGB(255, 12, 0, 0),
+                                color: Colors.black,
                               ),
                             ),
                             Text(
@@ -134,6 +134,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
+                                color: Colors.black,
                               ),
                             ),
                           ],
@@ -250,7 +251,11 @@ class _StatItem extends StatelessWidget {
         const SizedBox(width: 20),
         Text(
           count.toString(),
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
         ),
       ],
     );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:node/models/post.dart';
-import 'package:node/providers/posts_provider.dart';
-import 'package:node/widgets/blog_card.dart';
+import 'package:node/shared/models/post.dart';
+import 'package:node/features/feed/providers/posts_provider.dart';
+import 'package:node/shared/widgets/blog_card.dart';
 
 class ExploreScreen extends ConsumerStatefulWidget {
   const ExploreScreen({super.key});

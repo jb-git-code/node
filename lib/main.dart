@@ -1,12 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:node/core/themes/app_colors.dart';
 import 'package:node/firebase_options.dart';
-import 'package:node/providers/theme_provider.dart';
-import 'package:node/screens/app.dart';
-import 'package:node/screens/home.dart';
-import 'package:node/screens/login.dart';
-import 'package:node/screens/signup.dart';
+import 'package:node/core/themes/providers/theme_provider.dart';
+import 'package:node/app.dart';
+import 'package:node/features/feed/home.dart';
+import 'package:node/features/auth/login.dart';
+import 'package:node/features/auth/password_reset.dart';
+import 'package:node/features/auth/signup.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,11 +28,11 @@ class _MyAppState extends ConsumerState<MyApp> {
   Widget build(BuildContext context) {
     final themePro = ref.watch(themeModeProvider);
     return MaterialApp(
-      theme: ThemeData.light(useMaterial3: true),
+      theme: ThemeData(),
       darkTheme: ThemeData.dark(),
       themeMode: themePro,
       debugShowCheckedModeBanner: false,
-      home: App(),
+      home: LoginScreen(),
     );
   }
 }

@@ -2,8 +2,8 @@ import 'package:amicons/amicons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:node/models/post.dart';
-import 'package:node/services/firebase_service.dart';
+import 'package:node/shared/models/post.dart';
+import 'package:node/core/services/firebase_service.dart';
 
 class BlogCard extends ConsumerStatefulWidget {
   final Post post;
@@ -93,9 +93,13 @@ class _BlogCardState extends ConsumerState<BlogCard> {
                           isStarred
                               ? Amicons.remix_star_fill
                               : Amicons.remix_star,
+                          color: Colors.black,
                         ),
                       ),
-                      Text(widget.post.isStarredBy.length.toString()),
+                      Text(
+                        widget.post.isStarredBy.length.toString(),
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ],
                   ),
                   const SizedBox(width: 10),

@@ -1,7 +1,7 @@
 import 'package:amicons/amicons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:node/providers/theme_provider.dart';
+import 'package:node/core/themes/providers/theme_provider.dart';
 
 class ThemeSlider extends ConsumerWidget {
   const ThemeSlider({super.key});

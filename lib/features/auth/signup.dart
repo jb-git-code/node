@@ -1,23 +1,26 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:node/screens/app.dart';
-import 'package:node/screens/home.dart';
-import 'package:node/screens/signup.dart';
+import 'package:node/app.dart';
+import 'package:node/features/auth/login.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class SignupScreen extends StatelessWidget {
+  SignupScreen({super.key});
 
   final TextEditingController _email = TextEditingController();
   final TextEditingController _pass = TextEditingController();
 
-  Future<void> login(BuildContext context) async {
+  Future<void> register(BuildContext context) async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _email.text,
         password: _pass.text,
       );
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (conext) => App()) , (route) => false);
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (conext) => App()),
+        (route) => false,
+      );
     } catch (e) {
       throw e.toString();
     }
@@ -34,7 +37,7 @@ class LoginScreen extends StatelessWidget {
             children: [
               Spacer(),
               Text(
-                'Welcome Back!',
+                'Register!',
                 style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 40),
@@ -60,25 +63,25 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  login(context);
+                  register(context);
                 },
-                child: Text('Login', style: TextStyle(fontSize: 24)),
+                child: Text('Signup', style: TextStyle(fontSize: 24)),
               ),
               const SizedBox(height: 20),
               Row(
                 children: [
                   Spacer(),
-                  Text('Don\'t have an account'),
+                  Text('Already have an account'),
                   const SizedBox(width: 20),
                   GestureDetector(
                     onTap: () {
                       Navigator.pushAndRemoveUntil(
                         context,
-                        MaterialPageRoute(builder: (conext) => SignupScreen()),
+                        MaterialPageRoute(builder: (conext) => LoginScreen()),
                         (route) => false,
                       );
                     },
-                    child: Text('Register'),
+                    child: Text('Login'),
                   ),
                   Spacer(),
                 ],

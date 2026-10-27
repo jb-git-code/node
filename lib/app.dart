@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:node/providers/count_provider.dart';
-import 'package:node/providers/theme_provider.dart';
-import 'package:node/screens/compose.dart';
-import 'package:node/screens/explore.dart';
-import 'package:node/screens/home.dart';
-import 'package:node/screens/profile.dart';
+import 'package:node/features/feed/providers/count_provider.dart';
+import 'package:node/features/nodes/compose.dart';
+import 'package:node/features/feed/explore.dart';
+import 'package:node/features/feed/home.dart';
+import 'package:node/features/nodes/profile.dart';
 
 class App extends ConsumerStatefulWidget {
   const App({super.key});
@@ -19,6 +18,28 @@ class App extends ConsumerStatefulWidget {
 
 class _AppState extends ConsumerState<App> {
   int _currentIndex = 0;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+
+  //   // Listen for shared media/links while the app is running in memory
+  //   ReceiveSharingIntent.instance.getMediaStream().listen((
+  //     List<SharedMediaFile> value,
+  //   ) {
+  //     print("Incoming shared files: ${value.map((f) => f.path).join(",")}");
+  //   });
+
+  //   // Handle media/links that launched the app from a closed state
+  //   ReceiveSharingIntent.instance.getInitialMedia().then((
+  //     List<SharedMediaFile> value,
+  //   ) {
+  //     if (value.isNotEmpty) {
+  //       print("App opened via share: ${value.first.path}");
+  //       // Redirect user to the "Create Post" screen with this data
+  //     }
+  //   });
+  // }
 
   void changeTab(int index) {
     if (index == 3) {
@@ -100,7 +121,6 @@ class _AppState extends ConsumerState<App> {
 
   @override
   Widget build(BuildContext context) {
-    final themeValue = ref.watch(darkThemeProvider);
     return Scaffold(
       // extendBody: true,
       appBar: AppBar(

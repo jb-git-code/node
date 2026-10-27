@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
-import 'package:node/models/post.dart';
+import 'package:node/shared/models/post.dart';
 
 
 final selectedCategoryProvider = StateProvider<String?>((ref) => null);

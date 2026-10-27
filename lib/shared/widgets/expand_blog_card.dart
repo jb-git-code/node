@@ -1,6 +1,6 @@
 import 'package:amicons/amicons.dart';
 import 'package:flutter/material.dart';
-import 'package:node/models/post.dart';
+import 'package:node/shared/models/post.dart';
 
 class ExpandBlogCard extends StatefulWidget {
   const ExpandBlogCard({super.key, required this.post});
