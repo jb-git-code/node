@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/features/feed/providers/count_provider.dart';
 import 'package:node/core/themes/providers/theme_provider.dart';
 import 'package:node/features/auth/login.dart';
-import 'package:node/features/nodes/saved_nodes.dart';
+import 'package:node/features/nodes/views/saved_nodes.dart';
 import 'package:node/shared/widgets/theme_slider.dart';
 import 'package:url_launcher/url_launcher.dart';
 

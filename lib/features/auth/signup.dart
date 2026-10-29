@@ -1,14 +1,34 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:node/app.dart';
 import 'package:node/features/auth/login.dart';
+import 'package:node/shared/models/user.dart';
 
 class SignupScreen extends StatelessWidget {
   SignupScreen({super.key});
 
   final TextEditingController _email = TextEditingController();
   final TextEditingController _pass = TextEditingController();
+  final TextEditingController _name = TextEditingController();
+
+  Future<void> addUser() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      await FirebaseFirestore.instance.collection('users').add({
+        'name': _name.text,
+        'authorId': user?.uid,
+        'collegeId': 'iiitbh',
+        'email': _email.text,
+        'nodesCreated': 0,
+        'starsEarned': 0,
+        'joinedClusters': [],
+      });
+    } catch (e) {
+      throw e.toString();
+    }
+  }
 
   Future<void> register(BuildContext context) async {
     try {
@@ -16,6 +36,7 @@ class SignupScreen extends StatelessWidget {
         email: _email.text,
         password: _pass.text,
       );
+      await addUser();
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (conext) => App()),

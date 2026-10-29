@@ -4,10 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/features/feed/providers/count_provider.dart';
-import 'package:node/features/nodes/compose.dart';
-import 'package:node/features/feed/explore.dart';
-import 'package:node/features/feed/home.dart';
-import 'package:node/features/nodes/profile.dart';
+import 'package:node/features/nodes/views/compose.dart';
+import 'package:node/features/feed/views/explore.dart';
+import 'package:node/features/feed/views/home.dart';
+import 'package:node/features/nodes/views/profile.dart';
 
 class App extends ConsumerStatefulWidget {
   const App({super.key});

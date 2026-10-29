@@ -2,10 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/core/themes/app_colors.dart';
+import 'package:node/features/feed/views/edge_screen.dart';
 import 'package:node/firebase_options.dart';
 import 'package:node/core/themes/providers/theme_provider.dart';
 import 'package:node/app.dart';
-import 'package:node/features/feed/home.dart';
+import 'package:node/features/feed/views/home.dart';
 import 'package:node/features/auth/login.dart';
 import 'package:node/features/auth/password_reset.dart';
 import 'package:node/features/auth/signup.dart';
@@ -32,7 +33,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       darkTheme: ThemeData.dark(),
       themeMode: themePro,
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: EdgeScreen(),
     );
   }
 }
