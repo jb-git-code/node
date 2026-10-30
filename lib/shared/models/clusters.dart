@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Cluster {
   final String clusterId;
   final String clusterName;
@@ -14,4 +16,27 @@ class Cluster {
     required this.memberCount,
     required this.logo,
   });
+
+  factory Cluster.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
+    final data = doc.data() ?? {};
+    return Cluster(
+      clusterId: data['clusterId'] ?? doc.id,
+      clusterName: data['clusterName'] ?? '',
+      description: data['description'] ?? '',
+      tag: data['tag'] ?? '',
+      memberCount: data['memberCount'] ?? 0,
+      logo: data['logo'] ?? '',
+    );
+  }
+
+  static Map<String, dynamic> toFirestore(Cluster usr) {
+    return {
+      'clusterId': usr.clusterId,
+      'clusterName': usr.clusterName,
+      'description': usr.description,
+      'tag': usr.tag,
+      'memberCount': usr.memberCount,
+      'logo': usr.logo,
+    };
+  }
 }

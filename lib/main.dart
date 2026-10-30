@@ -33,7 +33,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       darkTheme: ThemeData.dark(),
       themeMode: themePro,
       debugShowCheckedModeBanner: false,
-      home: EdgeScreen(),
+      home: App(),
     );
   }
 }

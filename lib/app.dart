@@ -1,9 +1,11 @@
 import 'package:amicons/amicons.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/features/feed/providers/count_provider.dart';
+import 'package:node/features/feed/views/clusters_screen.dart';
 import 'package:node/features/nodes/views/compose.dart';
 import 'package:node/features/feed/views/explore.dart';
 import 'package:node/features/feed/views/home.dart';
@@ -128,8 +130,12 @@ class _AppState extends ConsumerState<App> {
         centerTitle: false,
         actions: [
           IconButton(
-            onPressed: () {
-              showNotificationsSheet(context);
+            onPressed: () async {
+              // showNotificationsSheet(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ClustersScreen()),
+              );
             },
             icon: Icon(Amicons.iconly_notification_2_sharp_fill),
           ),
