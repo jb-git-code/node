@@ -4,7 +4,6 @@ class UserModel {
   final String name;
   final String authorId;
   final String collegeId;
-  final String nodeId;
   final String email;
   final int nodesCreated;
   final int starsEarned;
@@ -15,7 +14,6 @@ class UserModel {
     required this.authorId,
     required this.collegeId,
     required this.email,
-    required this.nodeId,
     required this.nodesCreated,
     required this.starsEarned,
     required this.joinedClusters,
@@ -28,10 +26,9 @@ class UserModel {
       authorId: data['authorId'] ?? '',
       collegeId: data['collegeId'] ?? '',
       email: data['email'] ?? '',
-      nodeId: data['nodeId'] ?? '',
       nodesCreated: data['nodesCreated'] ?? 0,
       starsEarned: data['starsEarned'] ?? 0,
-      joinedClusters: data['joinedClusters'] ?? [],
+      joinedClusters:  List<String>.from(data['joinedClusters'] ?? []),
     );
   }
 
@@ -41,7 +38,6 @@ class UserModel {
       'authorId': usr.authorId,
       'collegeId': usr.collegeId,
       'email': usr.email,
-      'nodeId': usr.nodeId,
       'nodesCreated': usr.nodesCreated,
       'starsEarned': usr.starsEarned,
       'joinedClusters': usr.joinedClusters,

@@ -3,8 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/features/feed/providers/count_provider.dart';
-import 'package:node/core/themes/providers/theme_provider.dart';
 import 'package:node/features/auth/login.dart';
+import 'package:node/features/feed/views/clusters_screen.dart';
+import 'package:node/features/feed/views/users_screen.dart';
 import 'package:node/features/nodes/views/saved_nodes.dart';
 import 'package:node/shared/widgets/theme_slider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -95,14 +96,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         style: TextStyle(fontSize: 16, color: Colors.black),
                       ),
                       const SizedBox(height: 15),
-                      Text(
-                        user.email ?? 'Unknown',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: const Color.fromRGBO(0, 0, 0, 1),
-                        ),
-                      ),
-                      const SizedBox(height: 15),
+
                       createdCountAsync.when(
                         data: (count) =>
                             _StatItem(label: 'Nodes Created', count: count),
@@ -142,6 +136,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         loading: () => const CircularProgressIndicator(),
                         error: (e, _) => const Text('Error loading stars'),
                       ),
+                      const SizedBox(height: 15),
+                      Text(
+                        user.email ?? 'Unknown',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: const Color.fromRGBO(0, 0, 0, 1),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -150,6 +152,69 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           ),
           const SizedBox(height: 20),
           ThemeSlider(),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.only(left: 8, right: 8),
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ClustersScreen()),
+                    );
+                  },
+                  child: Container(
+                    height: 60,
+                    width: MediaQuery.of(context).size.width * .40,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFA2D788),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 20),
+                        Icon(
+                          Amicons.lucide_chart_no_axes_column_decreasing,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(width: 10),
+                        Text('Clusters', style: TextStyle(color: Colors.black)),
+                      ],
+                    ),
+                  ),
+                ),
+                Spacer(),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => UsersScreen()),
+                    );
+                  },
+                  child: Container(
+                    height: 60,
+                    width: MediaQuery.of(context).size.width * .40,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFA2D788),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 20),
+                        Icon(
+                          Amicons.lucide_chart_no_axes_column_decreasing,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(width: 10),
+                        Text('Edges', style: TextStyle(color: Colors.black)),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
           const SizedBox(height: 20),
           GestureDetector(
             onTap: () {

@@ -20,7 +20,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
         ? null
         : cat;
   }
-
+  
   @override
   void initState() {
     super.initState();

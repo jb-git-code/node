@@ -21,7 +21,7 @@ class ComposeBlog extends StatefulWidget {
 
 class _ComposeBlogState extends State<ComposeBlog> {
   final List<String> _categories = ["Tech", "Placement", "Share", "Exp"];
-
+  bool _isEditorReady = false;
   void _toggleCategory(String cat) {
     setState(() {
       if (selectedCategory == cat) {
@@ -33,7 +33,7 @@ class _ComposeBlogState extends State<ComposeBlog> {
   }
 
   final TextEditingController _title = TextEditingController();
-  late final MarkdownLiveController _des;
+  final TextEditingController _des = TextEditingController();
 
   bool isUploading = false;
 
@@ -82,35 +82,40 @@ class _ComposeBlogState extends State<ComposeBlog> {
     _des.dispose();
   }
 
-  void _insertMarkdown(String prefix, String suffix) {
-    final text = _des.text;
-    final selection = _des.selection;
+  // void _insertMarkdown(String prefix, String suffix) {
+  //   final text = _des.text;
+  //   final selection = _des.selection;
 
-    if (selection.baseOffset == -1) return; // No cursor active
+  //   if (selection.baseOffset == -1) return; // No cursor active
 
-    final selectedText = selection.textInside(text);
-    final newText = text.replaceRange(
-      selection.start,
-      selection.end,
-      '$prefix$selectedText$suffix',
-    );
+  //   final selectedText = selection.textInside(text);
+  //   final newText = text.replaceRange(
+  //     selection.start,
+  //     selection.end,
+  //     '$prefix$selectedText$suffix',
+  //   );
 
-    _des.value = TextEditingValue(
-      text: newText,
-      selection: TextSelection.collapsed(
-        offset: selection.start + prefix.length + selectedText.length,
-      ),
-    );
-  }
+  //   _des.value = TextEditingValue(
+  //     text: newText,
+  //     selection: TextSelection.collapsed(
+  //       offset: selection.start + prefix.length + selectedText.length,
+  //     ),
+  //   );
+  // }
 
-  @override
-  void initState() {
-    super.initState();
-    // Initialize the live-rendering controller
-    _des = MarkdownLiveController(
-      text: '', // Start with empty text or placeholder
-    );
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // Initialize the live-rendering controller
+  //   _des = MarkdownLiveController(text: '');
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     if (mounted) {
+  //       setState(() {
+  //         _isEditorReady = true;
+  //       });
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -130,6 +135,7 @@ class _ComposeBlogState extends State<ComposeBlog> {
               Row(
                 children: [
                   Expanded(
+                    // title
                     child: TextField(
                       // maxLength: 40,
                       controller: _title,
@@ -160,31 +166,14 @@ class _ComposeBlogState extends State<ComposeBlog> {
               const SizedBox(height: 10),
               buildCategories(context),
               const SizedBox(height: 10),
-              MarkdownLiveEditor(
+              // description
+              TextField(
                 controller: _des,
-                // Apply your custom design system to the live renderer
-                theme: MarkdownLiveTheme.light().copyWith(
-                  baseStyle: AppTextStyles.bodyMain,
-                  heading1Style: AppTextStyles.heading1,
-                  heading2Style: AppTextStyles.heading2,
-                  inlineCodeStyle: AppTextStyles.codeSnippet.copyWith(
-                    backgroundColor: AppColors.codeBackground,
-                  ),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(borderRadius: AppUI.cardRadius),
+                  hintText: 'Description',
                 ),
-              ),
-              const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                decoration: BoxDecoration(
-                  color: AppColors.surfaceWhite,
-                  boxShadow: AppUI.defaultShadow,
-                ),
-                child: SafeArea(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: MarkdownLiveToolbar(controller: _des),
-                  ),
-                ),
+                maxLines: 12,
               ),
             ],
           ),
@@ -222,57 +211,6 @@ class _ComposeBlogState extends State<ComposeBlog> {
           );
         }).toList(),
       ),
-    );
-  }
-
-  Widget _buildMarkdownToolbar() {
-    return Container(
-      height: 50,
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppUI.radiusPill),
-        color: AppColors.primaryGreen,
-        boxShadow: AppUI.defaultShadow,
-      ),
-      child: SafeArea(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              _toolbarIcon(
-                Icons.format_bold,
-                () => _insertMarkdown('**', '**'),
-              ),
-              _toolbarIcon(
-                Icons.format_italic,
-                () => _insertMarkdown('*', '*'),
-              ),
-              _toolbarIcon(Icons.code, () => _insertMarkdown('`', '`')),
-              _toolbarIcon(
-                Icons.data_object,
-                () => _insertMarkdown('\n```dart\n', '\n```\n'),
-              ),
-              _toolbarIcon(
-                Icons.format_list_bulleted,
-                () => _insertMarkdown('\n- ', ''),
-              ),
-              _toolbarIcon(
-                Icons.format_list_numbered,
-                () => _insertMarkdown('\n1. ', ''),
-              ),
-              _toolbarIcon(Icons.link, () => _insertMarkdown('[', '](url)')),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _toolbarIcon(IconData icon, VoidCallback onTap) {
-    return IconButton(
-      icon: Icon(icon, color: AppColors.textSecondary),
-      onPressed: onTap,
-      splashRadius: 20,
     );
   }
 }

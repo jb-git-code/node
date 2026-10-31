@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/core/themes/app_colors.dart';
-import 'package:node/features/feed/views/edge_screen.dart';
 import 'package:node/firebase_options.dart';
 import 'package:node/core/themes/providers/theme_provider.dart';
 import 'package:node/app.dart';

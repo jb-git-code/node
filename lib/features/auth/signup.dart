@@ -3,15 +3,25 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:node/app.dart';
+import 'package:node/core/themes/app_colors.dart';
 import 'package:node/features/auth/login.dart';
 import 'package:node/shared/models/user.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   SignupScreen({super.key});
 
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _email = TextEditingController();
+
   final TextEditingController _pass = TextEditingController();
+
   final TextEditingController _name = TextEditingController();
+
+  bool isRegistering = false;
 
   Future<void> addUser() async {
     try {
@@ -31,6 +41,9 @@ class SignupScreen extends StatelessWidget {
   }
 
   Future<void> register(BuildContext context) async {
+    setState(() {
+      isRegistering = true;
+    });
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _email.text,
@@ -42,8 +55,17 @@ class SignupScreen extends StatelessWidget {
         MaterialPageRoute(builder: (conext) => App()),
         (route) => false,
       );
+      final snackbar = SnackBar(
+        backgroundColor: AppColors.success,
+        content: Text('Registration Successful'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
     } catch (e) {
       throw e.toString();
+    } finally {
+      setState(() {
+        isRegistering = false;
+      });
     }
   }
 
@@ -62,6 +84,16 @@ class SignupScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 40),
+              TextField(
+                controller: _name,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  hintText: 'Name',
+                ),
+              ),
+              const SizedBox(height: 20),
               TextField(
                 controller: _email,
                 decoration: InputDecoration(
@@ -82,11 +114,13 @@ class SignupScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30),
-              ElevatedButton(
+              FilledButton(
                 onPressed: () {
                   register(context);
                 },
-                child: Text('Signup', style: TextStyle(fontSize: 24)),
+                child: (isRegistering)
+                    ? Center(child: CircularProgressIndicator())
+                    : Text('Signup', style: TextStyle(fontSize: 24)),
               ),
               const SizedBox(height: 20),
               Row(

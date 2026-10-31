@@ -6,6 +6,7 @@ import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/features/feed/providers/count_provider.dart';
 import 'package:node/features/feed/views/clusters_screen.dart';
+import 'package:node/features/feed/views/users_screen.dart';
 import 'package:node/features/nodes/views/compose.dart';
 import 'package:node/features/feed/views/explore.dart';
 import 'package:node/features/feed/views/home.dart';
@@ -132,10 +133,10 @@ class _AppState extends ConsumerState<App> {
           IconButton(
             onPressed: () async {
               // showNotificationsSheet(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ClustersScreen()),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => UsersScreen()),
+              // );
             },
             icon: Icon(Amicons.iconly_notification_2_sharp_fill),
           ),
