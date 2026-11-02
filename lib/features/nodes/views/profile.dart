@@ -7,6 +7,7 @@ import 'package:node/features/auth/login.dart';
 import 'package:node/features/feed/views/clusters_screen.dart';
 import 'package:node/features/feed/views/users_screen.dart';
 import 'package:node/features/nodes/views/saved_nodes.dart';
+import 'package:node/features/edges/views/edgess.dart';
 import 'package:node/shared/widgets/theme_slider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
