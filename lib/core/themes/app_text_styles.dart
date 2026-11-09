@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 
 class AppTextStyles {
@@ -41,4 +42,38 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.textLight,
   );
+
+  static TextStyle pageTitle(BuildContext context) {
+    return GoogleFonts.caveat(
+      fontSize: 32,
+      fontWeight: FontWeight.bold,
+      // Pulls black in light mode, white in dark mode
+      color: Theme.of(context).colorScheme.onSurface, 
+    );
+  }
+
+  static TextStyle cardHeader(BuildContext context) {
+    return GoogleFonts.inter(
+      fontSize: 18,
+      fontWeight: FontWeight.w600,
+      color: Theme.of(context).colorScheme.onSurface,
+    );
+  }
+
+  static TextStyle bodyText(BuildContext context) {
+    return GoogleFonts.inter(
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      color: Theme.of(context).colorScheme.onSurface,
+    );
+  }
+
+  static TextStyle primaryButton(BuildContext context) {
+    return GoogleFonts.inter(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      // Uses the button text color (e.g., black text on a green button)
+      color: Theme.of(context).colorScheme.onPrimary, 
+    );
+  }
 }

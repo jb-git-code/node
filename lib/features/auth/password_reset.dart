@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:node/app.dart';
+import 'package:node/core/themes/app_colors.dart';
 import 'package:node/features/feed/views/home.dart';
 import 'package:node/features/auth/login.dart';
 import 'package:node/features/auth/signup.dart';
@@ -50,13 +51,21 @@ class PasswordReset extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30),
-              ElevatedButton(
+              FilledButton(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(
+                    AppColors.primaryGreen,
+                  ),
+                  foregroundColor: WidgetStatePropertyAll(
+                    AppColors.textPrimary,
+                  ),
+                ),
                 onPressed: () {
                   resetPassword(context);
                 },
                 child: Text('Reset', style: TextStyle(fontSize: 24)),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 14),
 
               Spacer(),
             ],

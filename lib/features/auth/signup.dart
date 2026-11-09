@@ -1,11 +1,14 @@
+import 'package:amicons/amicons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:lottie/lottie.dart';
 import 'package:node/app.dart';
 import 'package:node/core/themes/app_colors.dart';
 import 'package:node/features/auth/login.dart';
 import 'package:node/shared/models/user.dart';
+import 'package:node/shared/widgets/animated_button.dart';
 
 class SignupScreen extends StatefulWidget {
   SignupScreen({super.key});
@@ -23,10 +26,12 @@ class _SignupScreenState extends State<SignupScreen> {
 
   bool isRegistering = false;
 
+  bool isPasswordHidden = false;
+
   Future<void> addUser() async {
     try {
       final user = FirebaseAuth.instance.currentUser;
-      await FirebaseFirestore.instance.collection('users').add({
+      await FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
         'name': _name.text,
         'authorId': user?.uid,
         'collegeId': 'iiitbh',
@@ -76,12 +81,18 @@ class _SignupScreenState extends State<SignupScreen> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Spacer(),
+              const SizedBox(height: 30),
+              Lottie.asset(
+                'assets/animations/crab.json',
+                height: 220,
+                width: 350,
+                fit: BoxFit.cover,
+              ),
               Text(
                 'Register!',
-                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.headlineLarge,
               ),
               const SizedBox(height: 40),
               TextField(
@@ -106,21 +117,44 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(height: 20),
               TextField(
                 controller: _pass,
+                obscureText: !isPasswordHidden,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                   hintText: 'Password',
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isPasswordHidden = !isPasswordHidden;
+                      });
+                    },
+                    icon: (isPasswordHidden)
+                        ? Icon(Icons.visibility)
+                        : Icon(Icons.visibility_off),
+                  ),
                 ),
               ),
               const SizedBox(height: 30),
-              FilledButton(
-                onPressed: () {
+              // FilledButton(
+              //   onPressed: () {
+              //     register(context);
+              //   },
+              //   child: (isRegistering)
+              //       ? Center(child: CircularProgressIndicator())
+              //       : Text('Signup', style: TextStyle(fontSize: 24)),
+              // ),
+              AnimatedAuthButton(
+                label: 'Sign In',
+                onPressed: () async {
+                  // This delay simulates network latency.
+                  // Replace with actual FirebaseAuth sign-in logic.
                   register(context);
+                  await Future.delayed(const Duration(seconds: 2));
+
+                  // If the authentication throws an error, the button will
+                  // automatically expand back to the "idle" state.
                 },
-                child: (isRegistering)
-                    ? Center(child: CircularProgressIndicator())
-                    : Text('Signup', style: TextStyle(fontSize: 24)),
               ),
               const SizedBox(height: 20),
               Row(
@@ -141,7 +175,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   Spacer(),
                 ],
               ),
-              Spacer(),
             ],
           ),
         ),

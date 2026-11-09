@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:node/features/feed/providers/cluster_provider.dart';
+import 'package:node/features/clusters/providers/cluster_provider.dart';
+import 'package:node/features/clusters/repository/cluster_repo.dart';
+import 'package:node/features/nodes/providers/current_user_provider.dart';
 import 'package:node/shared/widgets/cluster_card.dart';
 
 class ClustersScreen extends ConsumerStatefulWidget {
@@ -14,6 +16,8 @@ class _ClustersScreenState extends ConsumerState<ClustersScreen> {
   @override
   Widget build(BuildContext context) {
     final clusterAsync = ref.watch(clusterProvider);
+    final currUser = ref.watch(currentUserProvider);
+    final currentUser = currUser.value;
     return Scaffold(
       appBar: AppBar(title: Text('Cluster List')),
       body: clusterAsync.when(
@@ -22,13 +26,14 @@ class _ClustersScreenState extends ConsumerState<ClustersScreen> {
             itemCount: data.length,
             itemBuilder: (context, index) {
               final clusterItem = data[index];
+
               return ClusterCard(
+                clusterId: clusterItem.clusterId,
                 clusterName: clusterItem.clusterName,
                 description: clusterItem.description,
                 tag: clusterItem.tag,
                 memberCount: clusterItem.memberCount,
-                isJoined: false,
-                onJoinToggle: () {},
+                usr: currentUser!,
               );
             },
           );

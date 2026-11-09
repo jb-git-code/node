@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:node/core/utils/loading_overlay.dart';
 import 'package:node/features/feed/providers/count_provider.dart';
-import 'package:node/features/feed/views/clusters_screen.dart';
+import 'package:node/features/clusters/views/clusters_screen.dart';
 import 'package:node/features/feed/views/users_screen.dart';
+import 'package:node/features/nodes/providers/current_user_provider.dart';
 import 'package:node/features/nodes/views/compose.dart';
 import 'package:node/features/feed/views/explore.dart';
 import 'package:node/features/feed/views/home.dart';
@@ -49,6 +51,7 @@ class _AppState extends ConsumerState<App> {
       ref.invalidate(createdPostsCountProvider);
       ref.invalidate(savedPostsCountProvider);
       ref.invalidate(totalStarsEarnedProvider);
+      ref.invalidate(currentUserProvider);
     }
     HapticFeedback.selectionClick();
     setState(() {
@@ -123,6 +126,12 @@ class _AppState extends ConsumerState<App> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       // extendBody: true,
@@ -132,11 +141,33 @@ class _AppState extends ConsumerState<App> {
         actions: [
           IconButton(
             onPressed: () async {
-              // showNotificationsSheet(context);
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => UsersScreen()),
-              // );
+              // 1. Instantly show your professional Lottie animation overlay
+              LoadingOverlay.show(context);
+
+              try {
+                // 2. Do your background work (Firebase, API calls, etc.)
+                await Future.delayed(
+                  const Duration(seconds: 1),
+                ); // Simulated work
+
+                // 3. Hide the loading overlay
+                if (context.mounted) LoadingOverlay.hide(context);
+
+                // 4. Navigate to the next screen
+                if (context.mounted) {
+                  Navigator.of(
+                    context,
+                  ).push(MaterialPageRoute(builder: (context) => const App()));
+                }
+              } catch (e) {
+                // Always ensure the overlay is hidden if an error occurs!
+                if (context.mounted) {
+                  LoadingOverlay.hide(context);
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text('Error: $e')));
+                }
+              }
             },
             icon: Icon(Amicons.iconly_notification_2_sharp_fill),
           ),

@@ -29,7 +29,7 @@ class CarouselChip extends ConsumerWidget {
         },
         selectedColor: const Color(0xFFA2D788),
         labelStyle: TextStyle(
-          color: isSelected ? Colors.black : Colors.black87,
+          color: Theme.of(context).colorScheme.secondary,
           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
         ),
       ),

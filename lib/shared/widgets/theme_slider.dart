@@ -9,7 +9,7 @@ class ThemeSlider extends ConsumerWidget {
   Alignment _getAlignment(ThemeMode mode) {
     switch (mode) {
       case ThemeMode.system:
-        return const Alignment(-1.0, 0.0); 
+        return const Alignment(-1.0, 0.0);
       case ThemeMode.light:
         return const Alignment(0.0, 0.0);
       case ThemeMode.dark:

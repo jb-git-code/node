@@ -48,9 +48,13 @@ class _BlogCardState extends ConsumerState<BlogCard> {
               // title
               Row(
                 children: [
-                  Text(
-                    widget.post.title,
-                    style: TextStyle(fontSize: 40, color: Colors.black),
+                  Expanded(
+                    child: Text(
+                      widget.post.title,
+                      style: AppTextStyles.pageTitle(context),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                   Spacer(),
                   IconButton(

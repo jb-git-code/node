@@ -66,7 +66,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       final creator = data[index] as MapEntry<String, int>;
                       return ListTile(
                         leading: CircleAvatar(
-                          child: Text(creator.key[0].toUpperCase()),
+                          child: Text(creator.key[0].toUpperCase()) ,
                         ),
                         title: Text(
                           creator.key,

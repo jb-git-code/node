@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/features/feed/providers/count_provider.dart';
 import 'package:node/features/auth/login.dart';
-import 'package:node/features/feed/views/clusters_screen.dart';
+import 'package:node/features/clusters/views/clusters_screen.dart';
 import 'package:node/features/feed/views/users_screen.dart';
+import 'package:node/features/nodes/providers/current_user_provider.dart';
 import 'package:node/features/nodes/views/saved_nodes.dart';
 import 'package:node/features/edges/views/edgess.dart';
 import 'package:node/shared/widgets/theme_slider.dart';
@@ -46,253 +47,285 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget build(BuildContext context) {
     final createdCountAsync = ref.watch(createdPostsCountProvider);
     final savedCountAsync = ref.watch(savedPostsCountProvider);
-    final user = FirebaseAuth.instance.currentUser;
+    final userAsync = ref.watch(currentUserProvider);
     final totalStarsAsync = ref.watch(totalStarsEarnedProvider);
-    return Padding(
-      padding: EdgeInsetsGeometry.all(16),
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Color(0xFFA2D788),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            height: 250,
-            width: MediaQuery.of(context).size.width * .90,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                // photo + unique ID
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 150,
-                        width: 150,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.lightGreen,
-                        ),
-                        child: Icon(
-                          Amicons.iconly_profile_curved_fill,
-                          size: 60,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Text('@userID000', style: TextStyle(color: Colors.black)),
-                    ],
-                  ),
-                ),
-                // account info
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        user!.displayName ?? 'Unknown',
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      ),
-                      const SizedBox(height: 15),
 
-                      createdCountAsync.when(
-                        data: (count) =>
-                            _StatItem(label: 'Nodes Created', count: count),
-                        loading: () => const CircularProgressIndicator(),
-                        error: (e, _) => const Text('Error'),
-                      ),
-                      const SizedBox(height: 15),
-                      // Display Saved Count
-                      savedCountAsync.when(
-                        data: (count) =>
-                            _StatItem(label: 'Nodes Saved   ', count: count),
-                        loading: () => const CircularProgressIndicator(),
-                        error: (e, _) => const Text('Error'),
-                      ),
-                      const SizedBox(height: 15),
-                      totalStarsAsync.when(
-                        data: (stars) => Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text(
-                              'Stars Earned       ',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                              ),
+    return userAsync.when(
+      data: (user) {
+        if (user == null) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => LoginScreen()),
+            (route) => false,
+          );
+        }
+        return Padding(
+          padding: EdgeInsetsGeometry.all(16),
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFFA2D788),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                height: 220,
+                width: MediaQuery.of(context).size.width * .90,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // photo + unique ID
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 150,
+                            width: 150,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.lightGreen,
                             ),
+                            child: Icon(
+                              Amicons.iconly_profile_curved_fill,
+                              size: 60,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            '@userID000',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // account info
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            user!.name,
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          ),
+                          const SizedBox(height: 15),
+
+                          createdCountAsync.when(
+                            data: (count) =>
+                                _StatItem(label: 'Nodes Created', count: count),
+                            loading: () => const CircularProgressIndicator(),
+                            error: (e, _) => const Text('Error'),
+                          ),
+                          const SizedBox(height: 15),
+                          // Display Saved Count
+                          savedCountAsync.when(
+                            data: (count) => _StatItem(
+                              label: 'Nodes Saved   ',
+                              count: count,
+                            ),
+                            loading: () => const CircularProgressIndicator(),
+                            error: (e, _) => const Text('Error'),
+                          ),
+                          const SizedBox(height: 15),
+                          totalStarsAsync.when(
+                            data: (stars) => Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text(
+                                  'Stars Earned       ',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Text(
+                                  stars.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            loading: () => const CircularProgressIndicator(),
+                            error: (e, _) => const Text('Error loading stars'),
+                          ),
+                          const SizedBox(height: 15),
+                          Text(
+                            user.email,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: const Color.fromRGBO(0, 0, 0, 1),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              ThemeSlider(),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.only(left: 8, right: 8),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ClustersScreen(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height: 60,
+                        width: MediaQuery.of(context).size.width * .40,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFA2D788),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 20),
+                            Icon(
+                              Amicons.lucide_chart_no_axes_column_decreasing,
+                              color: Colors.black,
+                            ),
+                            const SizedBox(width: 10),
                             Text(
-                              stars.toString(),
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
+                              'Clusters',
+                              style: TextStyle(color: Colors.black),
                             ),
                           ],
                         ),
-                        loading: () => const CircularProgressIndicator(),
-                        error: (e, _) => const Text('Error loading stars'),
                       ),
-                      const SizedBox(height: 15),
-                      Text(
-                        user.email ?? 'Unknown',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: const Color.fromRGBO(0, 0, 0, 1),
+                    ),
+                    Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UsersScreen(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height: 60,
+                        width: MediaQuery.of(context).size.width * .40,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFA2D788),
+                          borderRadius: BorderRadius.circular(15),
                         ),
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 20),
+                            Icon(
+                              Amicons.lucide_chart_no_axes_column_decreasing,
+                              color: Colors.black,
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              'Edges',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SavedNodes()),
+                  );
+                },
+                child: Container(
+                  height: 60,
+                  width: MediaQuery.of(context).size.width * .90,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFA2D788),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 20),
+                      Icon(
+                        Amicons.lucide_chart_no_axes_column_decreasing,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        'Saved Nodes',
+                        style: TextStyle(color: Colors.black),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-          ThemeSlider(),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.only(left: 8, right: 8),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ClustersScreen()),
-                    );
-                  },
-                  child: Container(
-                    height: 60,
-                    width: MediaQuery.of(context).size.width * .40,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFA2D788),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 20),
-                        Icon(
-                          Amicons.lucide_chart_no_axes_column_decreasing,
-                          color: Colors.black,
-                        ),
-                        const SizedBox(width: 10),
-                        Text('Clusters', style: TextStyle(color: Colors.black)),
-                      ],
-                    ),
+              ),
+              const SizedBox(height: 20),
+              GestureDetector(
+                onTap: openAbout,
+                child: Container(
+                  height: 60,
+                  width: MediaQuery.of(context).size.width * .90,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFA2D788),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 20),
+                      Icon(Amicons.remix_information, color: Colors.black),
+                      const SizedBox(width: 10),
+                      Text('About', style: TextStyle(color: Colors.black)),
+                    ],
                   ),
                 ),
-                Spacer(),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => UsersScreen()),
-                    );
-                  },
-                  child: Container(
-                    height: 60,
-                    width: MediaQuery.of(context).size.width * .40,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFA2D788),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 20),
-                        Icon(
-                          Amicons.lucide_chart_no_axes_column_decreasing,
-                          color: Colors.black,
-                        ),
-                        const SizedBox(width: 10),
-                        Text('Edges', style: TextStyle(color: Colors.black)),
-                      ],
-                    ),
+              ),
+              const SizedBox(height: 20),
+              GestureDetector(
+                onTap: () async {
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (conext) => LoginScreen()),
+                    (route) => false,
+                  );
+                },
+                child: Container(
+                  height: 60,
+                  width: MediaQuery.of(context).size.width * .90,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFA2D788),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 20),
+                      Icon(Amicons.remix_login_box, color: Colors.black),
+                      const SizedBox(width: 10),
+                      Text('Log Out', style: TextStyle(color: Colors.black)),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          const SizedBox(height: 20),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SavedNodes()),
-              );
-            },
-            child: Container(
-              height: 60,
-              width: MediaQuery.of(context).size.width * .90,
-              decoration: BoxDecoration(
-                color: Color(0xFFA2D788),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Row(
-                children: [
-                  const SizedBox(width: 20),
-                  Icon(
-                    Amicons.lucide_chart_no_axes_column_decreasing,
-                    color: Colors.black,
-                  ),
-                  const SizedBox(width: 10),
-                  Text('Saved Nodes', style: TextStyle(color: Colors.black)),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          GestureDetector(
-            onTap: openAbout,
-            child: Container(
-              height: 60,
-              width: MediaQuery.of(context).size.width * .90,
-              decoration: BoxDecoration(
-                color: Color(0xFFA2D788),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Row(
-                children: [
-                  const SizedBox(width: 20),
-                  Icon(Amicons.remix_information, color: Colors.black),
-                  const SizedBox(width: 10),
-                  Text('About', style: TextStyle(color: Colors.black)),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          GestureDetector(
-            onTap: () async {
-              await FirebaseAuth.instance.signOut();
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (conext) => LoginScreen()),
-                (route) => false,
-              );
-            },
-            child: Container(
-              height: 60,
-              width: MediaQuery.of(context).size.width * .90,
-              decoration: BoxDecoration(
-                color: Color(0xFFA2D788),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Row(
-                children: [
-                  const SizedBox(width: 20),
-                  Icon(Amicons.remix_login_box, color: Colors.black),
-                  const SizedBox(width: 10),
-                  Text('Log Out', style: TextStyle(color: Colors.black)),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
+      error: ((error, stackTrace) => Text(error.toString())),
+      loading: () => Center(child: CircularProgressIndicator()),
     );
   }
 }

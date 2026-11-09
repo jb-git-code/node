@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:node/core/themes/app_colors.dart';
 import 'package:node/core/themes/app_text_styles.dart';
 import 'package:node/core/themes/app_ui_config.dart';
+import 'package:node/core/utils/loading_overlay.dart';
 import 'package:node/shared/models/post.dart';
 import 'package:node/app.dart';
 import 'package:node/features/feed/views/home.dart';
@@ -20,7 +21,6 @@ class ComposeBlog extends StatefulWidget {
 
 class _ComposeBlogState extends State<ComposeBlog> {
   final List<String> _categories = ["Tech", "Placement", "Share", "Exp"];
-  bool _isEditorReady = false;
   void _toggleCategory(String cat) {
     setState(() {
       if (selectedCategory == cat) {
@@ -34,14 +34,11 @@ class _ComposeBlogState extends State<ComposeBlog> {
   final TextEditingController _title = TextEditingController();
   final TextEditingController _des = TextEditingController();
 
-  bool isUploading = false;
-
   void addNode() async {
+    LoadingOverlay.show(context);
     try {
       final psid = Uuid().v4();
       final user = FirebaseAuth.instance.currentUser;
-      isUploading = true;
-      Future.delayed(Duration(microseconds: 1000));
       if (user == null) return;
       final newPost = Post(
         postId: psid,
@@ -62,15 +59,43 @@ class _ComposeBlogState extends State<ComposeBlog> {
           .collection('blogs')
           .doc(psid)
           .set((Post.toFirestore(newPost)));
-      setState(() {
-        isUploading = false;
-      });
-      Navigator.push(context, MaterialPageRoute(builder: (context) => App()));
-      print('post Added');
+      await Future.delayed(Duration(seconds: 2));
+      if (context.mounted) {
+        LoadingOverlay.hide(context);
+      }
+      if (context.mounted) {
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (context) => const App()));
+      }
     } catch (e) {
       throw e.toString();
     }
   }
+
+  // void _tapAddNode() async {
+  //   LoadingOverlay.show(context);
+  //   try {
+  //     addNode();
+  //     Future.delayed(Duration(seconds: 2));
+  //     if (context.mounted) {
+  //       LoadingOverlay.hide(context);
+  //     }
+
+  //     if (context.mounted) {
+  //       Navigator.of(
+  //         context,
+  //       ).push(MaterialPageRoute(builder: (context) => const App()));
+  //     }
+  //   } catch (e) {
+  //     if (context.mounted) {
+  //       LoadingOverlay.hide(context);
+  //       ScaffoldMessenger.of(
+  //         context,
+  //       ).showSnackBar(SnackBar(content: Text('Error: $e')));
+  //     }
+  //   }
+  // }
 
   String? selectedCategory;
 
@@ -128,7 +153,7 @@ class _ComposeBlogState extends State<ComposeBlog> {
             children: [
               Text(
                 'Share Experience, Connect a node',
-                style: TextStyle(fontSize: 40),
+                style: Theme.of(context).textTheme.displayMedium,
               ),
               const SizedBox(height: 20),
               Row(
@@ -156,9 +181,7 @@ class _ComposeBlogState extends State<ComposeBlog> {
                     ),
                     onPressed: addNode,
                     label: Text('Node'),
-                    icon: (!isUploading)
-                        ? Icon(Amicons.flaticon_navigation_rounded_fill)
-                        : CircularProgressIndicator(),
+                    icon: Icon(Amicons.flaticon_navigation_rounded_fill),
                   ),
                 ],
               ),
@@ -172,7 +195,7 @@ class _ComposeBlogState extends State<ComposeBlog> {
                   border: OutlineInputBorder(borderRadius: AppUI.cardRadius),
                   hintText: 'Description',
                 ),
-                maxLines: 12,
+                maxLines: 15,
               ),
             ],
           ),
