@@ -19,7 +19,6 @@ class _ClustersScreenState extends ConsumerState<ClustersScreen> {
     final currUser = ref.watch(currentUserProvider);
     final currentUser = currUser.value;
     return Scaffold(
-      appBar: AppBar(title: Text('Cluster List')),
       body: clusterAsync.when(
         data: (data) {
           return ListView.builder(

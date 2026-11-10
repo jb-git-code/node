@@ -29,6 +29,7 @@ final feedProvider = Provider<AsyncValue<dynamic>>((ref) {
         return trending; // sublist when poss
       // creators with most stars
       case FieldCategories.topCreators:
+        
         final Map<String, int> creatorStars = {};
         for (final p in posts) {
           creatorStars[p.authorName] =

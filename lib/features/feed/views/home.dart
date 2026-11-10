@@ -18,6 +18,13 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    ref.invalidate(postProvider);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final feedAsync = ref.watch(feedProvider);
     final selectedCategory = ref.watch(feedCategoryProvider);
@@ -66,7 +73,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       final creator = data[index] as MapEntry<String, int>;
                       return ListTile(
                         leading: CircleAvatar(
-                          child: Text(creator.key[0].toUpperCase()) ,
+                          child: Text(creator.key[0].toUpperCase()),
                         ),
                         title: Text(
                           creator.key,

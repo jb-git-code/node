@@ -1,5 +1,6 @@
 import 'package:amicons/amicons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
@@ -12,7 +13,8 @@ import 'package:node/features/nodes/providers/current_user_provider.dart';
 import 'package:node/features/nodes/views/compose.dart';
 import 'package:node/features/feed/views/explore.dart';
 import 'package:node/features/feed/views/home.dart';
-import 'package:node/features/nodes/views/profile.dart';
+import 'package:node/user/profile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class App extends ConsumerStatefulWidget {
   const App({super.key});
@@ -125,6 +127,44 @@ class _AppState extends ConsumerState<App> {
     );
   }
 
+  void openAbout() async {
+    final url = Uri.parse('https://github.com/jb-git-code/node');
+    try {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  Future<void> logoutPopUp(BuildContext context) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        icon: const Icon(Amicons.lucide_log_out, size: 32),
+        title: const Text('Log out?'),
+        content: const Text(
+          'You will need to sign in again to access your account.',
+        ),
+        actionsAlignment: MainAxisAlignment.spaceEvenly,
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Log out'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      await FirebaseAuth.instance.signOut();
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -139,37 +179,64 @@ class _AppState extends ConsumerState<App> {
         title: Text('Node'),
         centerTitle: false,
         actions: [
-          IconButton(
-            onPressed: () async {
-              // 1. Instantly show your professional Lottie animation overlay
-              LoadingOverlay.show(context);
-
-              try {
-                // 2. Do your background work (Firebase, API calls, etc.)
-                await Future.delayed(
-                  const Duration(seconds: 1),
-                ); // Simulated work
-
-                // 3. Hide the loading overlay
-                if (context.mounted) LoadingOverlay.hide(context);
-
-                // 4. Navigate to the next screen
-                if (context.mounted) {
-                  Navigator.of(
-                    context,
-                  ).push(MaterialPageRoute(builder: (context) => const App()));
-                }
-              } catch (e) {
-                // Always ensure the overlay is hidden if an error occurs!
-                if (context.mounted) {
-                  LoadingOverlay.hide(context);
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text('Error: $e')));
-                }
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert_rounded),
+            offset: const Offset(0, 44), // drops below the button
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            onSelected: (value) {
+              switch (value) {
+                case 'profile':
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => ProfileScreen()),
+                  );
+                  break;
+                case 'settings':
+                  // navigate to settings
+                  break;
+                case 'about':
+                  openAbout();
+                case 'logout':
+                  logoutPopUp(context);
+                  break;
               }
             },
-            icon: Icon(Amicons.iconly_notification_2_sharp_fill),
+            itemBuilder: (context) => const [
+              PopupMenuItem(
+                value: 'profile',
+                child: ListTile(
+                  leading: Icon(Icons.person_rounded),
+                  title: Text('Profile'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              PopupMenuItem(
+                value: 'settings',
+                child: ListTile(
+                  leading: Icon(Icons.settings_rounded),
+                  title: Text('Settings'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              PopupMenuItem(
+                value: 'about',
+                child: ListTile(
+                  leading: Icon(Icons.info_outline),
+                  title: Text('About'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              PopupMenuDivider(),
+              PopupMenuItem(
+                value: 'logout',
+                child: ListTile(
+                  leading: Icon(Icons.logout_rounded),
+                  title: Text('Log out'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -181,7 +248,7 @@ class _AppState extends ConsumerState<App> {
             HomeScreen(),
             ExploreScreen(),
             ComposeBlog(),
-            ProfileScreen(),
+            ClustersScreen(),
           ],
         ),
         child: Container(
@@ -218,8 +285,8 @@ class _AppState extends ConsumerState<App> {
                   label: 'Compose',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Amicons.iconly_profile_sharp_fill),
-                  label: 'Profile',
+                  icon: Icon(Amicons.vuesax_command_square),
+                  label: 'Clusters',
                 ),
               ],
             ),

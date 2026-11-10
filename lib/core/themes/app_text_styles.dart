@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 
 class AppTextStyles {
-  static const String primaryFontFamily = 'Inter'; 
+  static const String primaryFontFamily = 'Inter';
   static const String codeFontFamily = 'RobotoMono';
 
   static const TextStyle heading1 = TextStyle(
@@ -48,7 +48,7 @@ class AppTextStyles {
       fontSize: 32,
       fontWeight: FontWeight.bold,
       // Pulls black in light mode, white in dark mode
-      color: Theme.of(context).colorScheme.onSurface, 
+      color: Colors.black,
     );
   }
 
@@ -73,7 +73,7 @@ class AppTextStyles {
       fontSize: 16,
       fontWeight: FontWeight.bold,
       // Uses the button text color (e.g., black text on a green button)
-      color: Theme.of(context).colorScheme.onPrimary, 
+      color: Theme.of(context).colorScheme.onPrimary,
     );
   }
 }

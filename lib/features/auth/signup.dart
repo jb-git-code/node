@@ -83,7 +83,7 @@ class _SignupScreenState extends State<SignupScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const SizedBox(height: 30),
+              const SizedBox(height: 50),
               Lottie.asset(
                 'assets/animations/crab.json',
                 height: 220,

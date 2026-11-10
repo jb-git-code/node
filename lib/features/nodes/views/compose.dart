@@ -3,23 +3,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/core/themes/app_colors.dart';
 import 'package:node/core/themes/app_text_styles.dart';
 import 'package:node/core/themes/app_ui_config.dart';
 import 'package:node/core/utils/loading_overlay.dart';
+import 'package:node/features/nodes/providers/current_user_provider.dart';
 import 'package:node/shared/models/post.dart';
 import 'package:node/app.dart';
 import 'package:node/features/feed/views/home.dart';
 import 'package:uuid/uuid.dart';
 
-class ComposeBlog extends StatefulWidget {
+class ComposeBlog extends ConsumerStatefulWidget {
   ComposeBlog({super.key});
 
   @override
-  State<ComposeBlog> createState() => _ComposeBlogState();
+  ConsumerState<ComposeBlog> createState() => _ComposeBlogState();
 }
 
-class _ComposeBlogState extends State<ComposeBlog> {
+class _ComposeBlogState extends ConsumerState<ComposeBlog> {
   final List<String> _categories = ["Tech", "Placement", "Share", "Exp"];
   void _toggleCategory(String cat) {
     setState(() {
@@ -38,12 +40,21 @@ class _ComposeBlogState extends State<ComposeBlog> {
     LoadingOverlay.show(context);
     try {
       final psid = Uuid().v4();
-      final user = FirebaseAuth.instance.currentUser;
-      if (user == null) return;
+      final user = ref.read(currentUserProvider).value;
+      if (user == null) {
+        LoadingOverlay.hide(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+        return;
+      }
       final newPost = Post(
         postId: psid,
-        authorId: user.uid,
-        authorName: user.displayName ?? 'Unknown',
+        authorId: user.authorId,
+        authorName: user.name,
         collegeId: "iiitbh",
         createdAt: DateTime.now(),
         isGlobal: false,
@@ -60,6 +71,8 @@ class _ComposeBlogState extends State<ComposeBlog> {
           .doc(psid)
           .set((Post.toFirestore(newPost)));
       await Future.delayed(Duration(seconds: 2));
+      _des.clear();
+      _title.clear();
       if (context.mounted) {
         LoadingOverlay.hide(context);
       }
