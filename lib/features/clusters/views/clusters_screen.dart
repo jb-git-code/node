@@ -26,13 +26,16 @@ class _ClustersScreenState extends ConsumerState<ClustersScreen> {
             itemBuilder: (context, index) {
               final clusterItem = data[index];
 
-              return ClusterCard(
-                clusterId: clusterItem.clusterId,
-                clusterName: clusterItem.clusterName,
-                description: clusterItem.description,
-                tag: clusterItem.tag,
-                memberCount: clusterItem.memberCount,
-                usr: currentUser!,
+              return Padding(
+                padding: const EdgeInsets.only(left: 8, right: 8),
+                child: ClusterCard(
+                  clusterId: clusterItem.clusterId,
+                  clusterName: clusterItem.clusterName,
+                  description: clusterItem.description,
+                  tag: clusterItem.tag,
+                  memberCount: clusterItem.memberCount,
+                  usr: currentUser!,
+                ),
               );
             },
           );

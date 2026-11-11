@@ -27,7 +27,7 @@ class AuthGate extends ConsumerWidget {
       // YOUR CUSTOM LOADING ANIMATION GOES HERE
       // This shows immediately when the app launches while Firebase checks the token
       loading: () => Scaffold(
-        backgroundColor: AppColors.backgroundLavender, // Match your theme
+        backgroundColor: Theme.of(context).colorScheme.surface, // Match your theme
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -41,7 +41,7 @@ class AuthGate extends ConsumerWidget {
               const SizedBox(height: 16),
               const Text(
                 'Initializing Node...',
-                style: TextStyle(color: AppColors.primaryPurple, fontWeight: FontWeight.bold),
+                style: TextStyle( fontWeight: FontWeight.bold),
               )
             ],
           ),

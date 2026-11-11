@@ -1,4 +1,4 @@
-import 'package:amicons/amicons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/core/themes/providers/theme_provider.dart';
@@ -61,21 +61,21 @@ class ThemeSlider extends ConsumerWidget {
                 children: [
                   _ThemeOption(
                     title: 'System',
-                    icon: Amicons.remix_switch_fill,
+                    icon: LucideIcons.sunMoon,
                     isSelected: currentMode == ThemeMode.system,
                     onTap: () => ref.read(themeModeProvider.notifier).state =
                         ThemeMode.system,
                   ),
                   _ThemeOption(
                     title: 'Light',
-                    icon: Icons.light_mode,
+                    icon: LucideIcons.sun,
                     isSelected: currentMode == ThemeMode.light,
                     onTap: () => ref.read(themeModeProvider.notifier).state =
                         ThemeMode.light,
                   ),
                   _ThemeOption(
                     title: 'Dark',
-                    icon: Icons.dark_mode,
+                    icon: LucideIcons.moon,
                     isSelected: currentMode == ThemeMode.dark,
                     onTap: () => ref.read(themeModeProvider.notifier).state =
                         ThemeMode.dark,

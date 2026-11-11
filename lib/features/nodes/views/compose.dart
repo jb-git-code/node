@@ -1,4 +1,4 @@
-import 'package:amicons/amicons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -194,7 +194,7 @@ class _ComposeBlogState extends ConsumerState<ComposeBlog> {
                     ),
                     onPressed: addNode,
                     label: Text('Node'),
-                    icon: Icon(Amicons.flaticon_navigation_rounded_fill),
+                    icon: const Icon(LucideIcons.send),
                   ),
                 ],
               ),
@@ -221,7 +221,7 @@ class _ComposeBlogState extends ConsumerState<ComposeBlog> {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: Wrap(
-        spacing: 12.0, // Gap between chips horizontally
+        spacing: 16.0, // Gap between chips horizontally
         runSpacing: 8, // Gap between chips vertically
         children: _categories.map((category) {
           final isSelected = (selectedCategory == category);
@@ -230,18 +230,21 @@ class _ComposeBlogState extends ConsumerState<ComposeBlog> {
             selected: isSelected,
             onSelected: (_) => _toggleCategory(category),
             labelStyle: TextStyle(
-              color: isSelected ? Colors.black : Colors.white70,
+              color: isSelected
+                  ? Theme.of(context).colorScheme.surface
+                  : Theme.of(context).colorScheme.primary,
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
             ),
-            backgroundColor: const Color(0xFF1E1E1E),
-            selectedColor: Colors.lightGreenAccent,
-            checkmarkColor: Colors.black,
+            backgroundColor: isSelected
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.surface,
+            selectedColor: Theme.of(context).colorScheme.primary,
+            checkmarkColor: !isSelected
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.surface,
             showCheckmark: true,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
-              side: BorderSide(
-                color: isSelected ? Colors.lightGreenAccent : Colors.white24,
-              ),
             ),
           );
         }).toList(),

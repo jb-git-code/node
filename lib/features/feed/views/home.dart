@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/shared/models/post.dart';
 import 'package:node/features/feed/providers/carousel_chip.dart';
@@ -82,7 +83,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.star, color: Colors.amber),
+                            const Icon(Icons.star, color: Colors.green),
                             const SizedBox(width: 4),
                             Text(
                               '${creator.value}',

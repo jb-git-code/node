@@ -21,13 +21,15 @@ class EdgeConnectionTile extends StatelessWidget {
       ),
       leading: GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => NodeProfile(usr: usr)));
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => NodeProfile(usr: usr)),
+          );
         },
         child: CircleAvatar(
-          backgroundColor: AppColors.primaryGreen,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           child: Text(
             usr.name[0],
-            style: const TextStyle(color: AppColors.textPrimary),
+            style: TextStyle(color: Theme.of(context).colorScheme.surface),
           ),
         ),
       ),

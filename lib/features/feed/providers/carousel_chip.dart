@@ -20,14 +20,21 @@ class CarouselChip extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
       child: ChoiceChip(
-        label: Text(label),
+        label: Text(
+          label,
+          style: TextStyle(
+            color: (isSelected)
+                ? Theme.of(context).colorScheme.surface
+                : Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
         selected: isSelected,
         onSelected: (bool selected) {
           if (selected) {
             ref.read(feedCategoryProvider.notifier).state = category;
           }
         },
-        selectedColor: const Color(0xFFA2D788),
+        selectedColor: Theme.of(context).colorScheme.primary,
         labelStyle: TextStyle(
           color: Theme.of(context).colorScheme.secondary,
           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,

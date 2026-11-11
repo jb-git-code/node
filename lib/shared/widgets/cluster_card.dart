@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:node/core/themes/app_colors.dart';
-import 'package:node/core/themes/app_text_styles.dart';
 import 'package:node/core/themes/app_ui_config.dart';
 import 'package:node/features/clusters/repository/cluster_repo.dart';
-import 'package:node/features/nodes/providers/current_user_provider.dart';
 import 'package:node/shared/models/user.dart';
+
+// Removed: app_colors.dart and app_text_styles.dart.
+// All colors and text styles now come from Theme.of(context).
 
 class ClusterCard extends ConsumerStatefulWidget {
   final String clusterId;
@@ -16,14 +17,14 @@ class ClusterCard extends ConsumerStatefulWidget {
   final UserModel usr;
 
   const ClusterCard({
-    Key? key,
+    super.key,
     required this.clusterId,
     required this.clusterName,
     required this.description,
     required this.tag,
     required this.memberCount,
     required this.usr,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<ClusterCard> createState() => _ClusterCardState();
@@ -41,15 +42,19 @@ class _ClusterCardState extends ConsumerState<ClusterCard> {
 
   @override
   Widget build(BuildContext context) {
-    
+    final colors = Theme.of(context).colorScheme;
+    final text = Theme.of(context).textTheme;
     final hasJoined = widget.usr.joinedClusters.contains(widget.clusterId);
+
     return Container(
       margin: const EdgeInsets.only(bottom: AppUI.paddingMedium),
       padding: const EdgeInsets.all(AppUI.paddingLarge),
       decoration: BoxDecoration(
-        color: AppColors.surfaceWhite,
+        color: colors.surface, // white (light) / dark grey (dark)
         borderRadius: AppUI.cardRadius,
-        boxShadow: AppUI.defaultShadow,
+        border: Border.all(
+          color: colors.outline,
+        ), // flat border instead of shadow
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,24 +65,28 @@ class _ClusterCardState extends ConsumerState<ClusterCard> {
               Expanded(
                 child: Text(
                   widget.clusterName,
-                  style: AppTextStyles.heading2,
+                  style: text.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
+              const SizedBox(width: 8),
+              // Tag chip
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.backgroundLavender,
+                  color: colors.surfaceContainerHigh, // light grey
                   borderRadius: AppUI.chipRadius,
                 ),
                 child: Text(
                   widget.tag,
-                  style: AppTextStyles.caption.copyWith(
-                    color: AppColors.primaryPurple,
+                  style: text.bodySmall?.copyWith(
+                    color: colors.onSurface,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -87,9 +96,7 @@ class _ClusterCardState extends ConsumerState<ClusterCard> {
           const SizedBox(height: AppUI.paddingSmall),
           Text(
             widget.description,
-            style: AppTextStyles.bodyMain.copyWith(
-              color: AppColors.textSecondary,
-            ),
+            style: text.bodyMedium?.copyWith(color: colors.onSurfaceVariant),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
@@ -99,15 +106,17 @@ class _ClusterCardState extends ConsumerState<ClusterCard> {
             children: [
               Row(
                 children: [
-                  const Icon(
-                    Icons.people_outline,
+                  Icon(
+                    LucideIcons.users,
                     size: 18,
-                    color: AppColors.textSecondary,
+                    color: colors.onSurfaceVariant,
                   ),
                   const SizedBox(width: 4),
                   Text(
                     '${widget.memberCount} Members',
-                    style: AppTextStyles.caption,
+                    style: text.bodySmall?.copyWith(
+                      color: colors.onSurfaceVariant,
+                    ),
                   ),
                 ],
               ),
@@ -115,13 +124,17 @@ class _ClusterCardState extends ConsumerState<ClusterCard> {
                 height: 36,
                 child: FilledButton(
                   style: FilledButton.styleFrom(
+                    minimumSize: const Size(64, 36),
+                    // Not joined: solid black/white button
+                    // Joined: quiet grey button with a border
                     backgroundColor: hasJoined
-                        ? AppColors.backgroundLavender
-                        : AppColors.primaryGreen,
+                        ? colors.surfaceContainerHigh
+                        : colors.primary,
                     foregroundColor: hasJoined
-                        ? AppColors.primaryPurple
-                        : AppColors.textPrimary,
+                        ? colors.onSurface
+                        : colors.onPrimary,
                     elevation: 0,
+                    side: hasJoined ? BorderSide(color: colors.outline) : null,
                     shape: RoundedRectangleBorder(
                       borderRadius: AppUI.chipRadius,
                     ),

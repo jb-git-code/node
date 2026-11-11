@@ -44,7 +44,7 @@ class AppTextStyles {
   );
 
   static TextStyle pageTitle(BuildContext context) {
-    return GoogleFonts.caveat(
+    return GoogleFonts.inter(
       fontSize: 32,
       fontWeight: FontWeight.bold,
       // Pulls black in light mode, white in dark mode

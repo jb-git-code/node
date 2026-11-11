@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -9,7 +10,7 @@ class CompletionProfileCard extends StatelessWidget {
   final bool hasProfilePic, hasLinkedIn, hasGitHub;
 
   const CompletionProfileCard({
-    Key? key,
+    super.key,
     required this.name,
     required this.handle,
     required this.email,
@@ -19,7 +20,7 @@ class CompletionProfileCard extends StatelessWidget {
     this.hasProfilePic = false,
     this.hasLinkedIn = false,
     this.hasGitHub = false,
-  }) : super(key: key);
+  });
 
   double get _completion =>
       [
@@ -33,30 +34,20 @@ class CompletionProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
-    final text = dark ? Colors.white : const Color(0xFF14261A);
-    final sub = text.withOpacity(0.6);
-    final accent = dark ? const Color(0xFF6EE7A0) : const Color(0xFF1B8A4B);
-    final accent2 = dark ? const Color(0xFF38BDF8) : const Color(0xFF14B8A6);
+    final colors = Theme.of(context).colorScheme;
+    final text = Theme.of(context).textTheme;
 
     return Container(
           width: MediaQuery.of(context).size.width * 0.9,
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(28),
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.4),
-            border: Border.all(color: accent.withOpacity(dark ? 0.18 : 0.12)),
-            boxShadow: [
-              BoxShadow(
-                color: accent.withOpacity(dark ? 0.12 : 0.15),
-                blurRadius: 30,
-                offset: const Offset(0, 12),
-              ),
-            ],
+            borderRadius: BorderRadius.circular(20),
+            color: colors.surface,
+            border: Border.all(color: colors.outline), // flat border, no shadow
           ),
           child: Row(
             children: [
-              _avatar(dark, text, accent, accent2),
+              _avatar(colors),
               const SizedBox(width: 20),
               Expanded(
                 child: Column(
@@ -66,20 +57,20 @@ class CompletionProfileCard extends StatelessWidget {
                       name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
+                      style: text.titleLarge?.copyWith(
                         fontSize: 22,
                         fontWeight: FontWeight.w800,
                         letterSpacing: -0.5,
-                        color: text,
+                        color: colors.onSurface,
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       handle,
-                      style: TextStyle(
+                      style: text.bodySmall?.copyWith(
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
-                        color: accent,
+                        color: colors.onSurfaceVariant,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -87,27 +78,9 @@ class CompletionProfileCard extends StatelessWidget {
                       spacing: 8,
                       runSpacing: 8,
                       children: [
-                        _pill(
-                          Icons.hub_rounded,
-                          createdCountAsync,
-                          dark,
-                          text,
-                          accent,
-                        ),
-                        _pill(
-                          Icons.bookmark_rounded,
-                          savedCountAsync,
-                          dark,
-                          text,
-                          accent,
-                        ),
-                        _pill(
-                          Icons.star_rounded,
-                          totalStarsAsync,
-                          dark,
-                          text,
-                          accent,
-                        ),
+                        _pill(LucideIcons.network, createdCountAsync, colors),
+                        _pill(LucideIcons.bookmark, savedCountAsync, colors),
+                        _pill(LucideIcons.star, totalStarsAsync, colors),
                       ],
                     ),
                     const SizedBox(height: 14),
@@ -115,7 +88,9 @@ class CompletionProfileCard extends StatelessWidget {
                       email,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 12, color: sub),
+                      style: text.bodySmall?.copyWith(
+                        color: colors.onSurfaceVariant,
+                      ),
                     ),
                   ],
                 ),
@@ -128,7 +103,7 @@ class CompletionProfileCard extends StatelessWidget {
         .slideY(begin: 0.06, curve: Curves.easeOutCubic);
   }
 
-  Widget _avatar(bool dark, Color text, Color a1, Color a2) {
+  Widget _avatar(ColorScheme colors) {
     final pct = _completion;
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: pct),
@@ -140,68 +115,62 @@ class CompletionProfileCard extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            // CustomPaint(
-            //   size: const Size(104, 104),
-            //   painter: _RingPainter(p, [a1, a2], text.withOpacity(0.08)),
-            // ),
+            // Completion ring: solid ink on a light grey track
+            CustomPaint(
+              size: const Size(104, 104),
+              painter: _RingPainter(p, colors.primary, colors.outline),
+            ),
             Container(
               width: 82,
               height: 82,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: dark ? const Color(0xFF223229) : Colors.white,
+                color: colors.surfaceContainerHigh,
               ),
               child: Icon(
-                Icons.person_rounded,
+                LucideIcons.user,
                 size: 48,
-                color: text.withOpacity(0.5),
+                color: colors.onSurfaceVariant,
               ),
             ),
-            // Positioned(
-            //   bottom: 0,
-            //   right: 0,
-            //   child: Container(
-            //     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-            //     decoration: BoxDecoration(
-            //       gradient: LinearGradient(colors: [a1, a2]),
-            //       borderRadius: BorderRadius.circular(20),
-            //     ),
-            //     child: Text(
-            //       '${(p * 100).round()}%',
-            //       style: TextStyle(
-            //         fontSize: 11,
-            //         fontWeight: FontWeight.w800,
-            //         color: dark ? const Color(0xFF0E1512) : Colors.white,
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            // Percentage badge
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: colors.primary,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  '${(p * 100).round()}%',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                    color: colors.onPrimary,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     ).animate().scale(duration: 500.ms, curve: Curves.easeOutBack);
   }
 
-  Widget _pill(
-    IconData icon,
-    AsyncValue<int> v,
-    bool dark,
-    Color text,
-    Color accent,
-  ) {
+  Widget _pill(IconData icon, AsyncValue<int> v, ColorScheme colors) {
     return Container(
       padding: const EdgeInsets.fromLTRB(10, 7, 12, 7),
       decoration: BoxDecoration(
-        color: dark
-            ? Colors.white.withOpacity(0.07)
-            : Colors.white.withOpacity(0.75),
+        color: colors.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: text.withOpacity(0.06)),
+        border: Border.all(color: colors.outline),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 16, color: accent),
+          Icon(icon, size: 16, color: colors.onSurfaceVariant),
           const SizedBox(width: 6),
           v.when(
             data: (n) => TweenAnimationBuilder<int>(
@@ -213,15 +182,17 @@ class CompletionProfileCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
-                  color: text,
+                  color: colors.onSurface,
                   fontFeatures: const [FontFeature.tabularFigures()],
                 ),
               ),
             ),
             loading: () =>
-                Text('–', style: TextStyle(color: text.withOpacity(0.4))),
-            error: (_, __) =>
-                const Text('!', style: TextStyle(color: Colors.red)),
+                Text('–', style: TextStyle(color: colors.onSurfaceVariant)),
+            error: (_, __) => Text(
+              '!',
+              style: TextStyle(color: colors.error), // the red error color
+            ),
           ),
         ],
       ),
@@ -231,9 +202,9 @@ class CompletionProfileCard extends StatelessWidget {
 
 class _RingPainter extends CustomPainter {
   final double progress;
-  final List<Color> colors;
+  final Color color;
   final Color track;
-  _RingPainter(this.progress, this.colors, this.track);
+  _RingPainter(this.progress, this.color, this.track);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -244,19 +215,16 @@ class _RingPainter extends CustomPainter {
       ..strokeWidth = stroke
       ..strokeCap = StrokeCap.round;
 
+    // Track (full circle)
     canvas.drawArc(rect, 0, math.pi * 2, false, paint..color = track);
     if (progress <= 0) return;
 
+    // Progress arc (solid color, starts at 12 o'clock)
     final sweep = math.max(progress * math.pi * 2, 0.01);
-    paint.shader = SweepGradient(
-      endAngle: sweep,
-      colors: colors,
-      transform: const GradientRotation(-math.pi / 2),
-    ).createShader(rect);
-    canvas.drawArc(rect, -math.pi / 2, sweep, false, paint);
+    canvas.drawArc(rect, -math.pi / 2, sweep, false, paint..color = color);
   }
 
   @override
   bool shouldRepaint(_RingPainter o) =>
-      o.progress != progress || o.colors != colors;
+      o.progress != progress || o.color != color || o.track != track;
 }

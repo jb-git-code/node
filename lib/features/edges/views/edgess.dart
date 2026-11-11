@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:node/core/themes/app_colors.dart';
 import 'package:node/core/themes/app_ui_config.dart';
@@ -35,17 +36,14 @@ class EdgeActionButton extends StatelessWidget {
         // no connection exists
         if (!doc.exists) {
           return FilledButton.icon(
-            style: FilledButton.styleFrom(
-              backgroundColor: AppColors.primaryGreen,
-            ),
             onPressed: () => edgeRepo.sendEdgeRequest(
               currentUserId: currentUserId,
               targetUserId: targetUserId,
             ),
-            icon: const Icon(Icons.add_link, color: AppColors.textPrimary),
-            label: const Text(
+            icon: Icon(LucideIcons.link2, color: Colors.lightGreenAccent),
+            label: Text(
               'Connect Node',
-              style: TextStyle(color: AppColors.textPrimary),
+              style: TextStyle(color: Colors.lightGreenAccent),
             ),
           );
         }
@@ -58,7 +56,7 @@ class EdgeActionButton extends StatelessWidget {
         if (status == 'connected') {
           return OutlinedButton.icon(
             onPressed: () => edgeRepo.deleteEdge(currentUserId, targetUserId),
-            icon: const Icon(Icons.link, color: AppColors.primaryPurple),
+            icon: const Icon(LucideIcons.link, color: AppColors.primaryPurple),
             label: const Text('Edge Established'),
           );
         }
@@ -69,28 +67,35 @@ class EdgeActionButton extends StatelessWidget {
             // you sent the request
             return OutlinedButton(
               onPressed: () => edgeRepo.deleteEdge(currentUserId, targetUserId),
-              child: const Text('Request Sent (Cancel)'),
+              child: Text(
+                'Request Sent (Cancel)',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.errorContainer,
+                ),
+              ),
             );
           } else {
-            // they sent the request to you 
+            // they sent the request to you
             return Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 FilledButton(
-                  style: FilledButton.styleFrom(
-                    backgroundColor: AppColors.primaryGreen,
-                  ),
                   onPressed: () => edgeRepo.acceptEdgeRequest(edgeId),
-                  child: const Text(
+                  child: Text(
                     'Accept',
-                    style: TextStyle(color: AppColors.textPrimary),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
                   ),
                 ),
                 const SizedBox(width: AppUI.paddingSmall),
                 IconButton(
                   onPressed: () =>
                       edgeRepo.deleteEdge(currentUserId, targetUserId),
-                  icon: const Icon(Icons.close, color: AppColors.error),
+                  icon: Icon(
+                    LucideIcons.x,
+                    color: Theme.of(context).colorScheme.errorContainer,
+                  ),
                 ),
               ],
             );

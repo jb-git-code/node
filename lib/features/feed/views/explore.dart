@@ -20,7 +20,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
         ? null
         : cat;
   }
-  
+
   @override
   void initState() {
     super.initState();
@@ -35,7 +35,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
       child: Column(
         children: [
           buildCategories(context),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           filterPosts.when(
             data: (post) {
               return Expanded(
@@ -74,12 +74,12 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   Widget buildCategories(BuildContext context) {
     final selectedCategory = ref.watch(selectedCategoryProvider);
     return Padding(
-      padding: const EdgeInsets.all(4.0),
+      padding: const EdgeInsets.only(left: 4.0, right: 4.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Wrap(
-            spacing: 12.0,
+            spacing: 17.0,
             runSpacing: 10.0,
             children: _categories.map((category) {
               final isSelected = (selectedCategory == category);
@@ -88,20 +88,21 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                 selected: isSelected,
                 onSelected: (_) => _toggleCategory(category),
                 labelStyle: TextStyle(
-                  color: isSelected ? Colors.black : Colors.white70,
+                  color: isSelected
+                      ? Theme.of(context).colorScheme.surface
+                      : Theme.of(context).colorScheme.primary,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                 ),
-                backgroundColor: const Color(0xFF1E1E1E),
-                selectedColor: Colors.lightGreenAccent,
-                checkmarkColor: Colors.black,
+                backgroundColor: isSelected
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.surface,
+                selectedColor: Theme.of(context).colorScheme.primary,
+                checkmarkColor: !isSelected
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.surface,
                 showCheckmark: true,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
-                  side: BorderSide(
-                    color: isSelected
-                        ? Colors.lightGreenAccent
-                        : Colors.white24,
-                  ),
                 ),
               );
             }).toList(),

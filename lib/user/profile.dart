@@ -1,4 +1,4 @@
-import 'package:amicons/amicons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -69,76 +69,38 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 ThemeSlider(),
                 const SizedBox(height: 20),
                 // Settings
-                Padding(
-                  padding: const EdgeInsets.only(left: 8, right: 8),
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ClustersScreen(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          height: 60,
-                          width: MediaQuery.of(context).size.width * .40,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFA2D788),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Row(
-                            children: [
-                              const SizedBox(width: 20),
-                              Icon(
-                                Amicons.lucide_chart_no_axes_column_decreasing,
-                                color: Colors.black,
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                'Clusters',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ],
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => UsersScreen()),
+                    );
+                  },
+                  child: Container(
+                    height: 60,
+                    width: MediaQuery.of(context).size.width * .90,
+                    decoration: BoxDecoration(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 20),
+                        Icon(
+                          LucideIcons.network,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          'Edges',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
-                      ),
-                      Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => UsersScreen(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          height: 60,
-                          width: MediaQuery.of(context).size.width * .40,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFA2D788),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Row(
-                            children: [
-                              const SizedBox(width: 20),
-                              Icon(
-                                Amicons.lucide_chart_no_axes_column_decreasing,
-                                color: Colors.black,
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                'Edges',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -153,20 +115,24 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     height: 60,
                     width: MediaQuery.of(context).size.width * .90,
                     decoration: BoxDecoration(
-                      color: Color(0xFFA2D788),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Row(
                       children: [
                         const SizedBox(width: 20),
                         Icon(
-                          Amicons.lucide_chart_no_axes_column_decreasing,
-                          color: Colors.black,
+                          LucideIcons.bookmark,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                         const SizedBox(width: 10),
                         Text(
                           'Saved Nodes',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
                       ],
                     ),

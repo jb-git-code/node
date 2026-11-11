@@ -1,4 +1,4 @@
-import 'package:amicons/amicons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/core/utils/loading_overlay.dart';
+import 'package:node/features/auth/login.dart';
 import 'package:node/features/feed/providers/count_provider.dart';
 import 'package:node/features/clusters/views/clusters_screen.dart';
 import 'package:node/features/feed/views/users_screen.dart';
@@ -110,7 +111,7 @@ class _AppState extends ConsumerState<App> {
                     itemBuilder: (context, index) {
                       return ListTile(
                         leading: const CircleAvatar(
-                          child: Icon(Icons.notifications_outlined, size: 20),
+                          child: Icon(LucideIcons.bell, size: 20),
                         ),
                         title: Text('Update notification #${index + 1}'),
                         subtitle: const Text('2 hours ago'),
@@ -141,7 +142,7 @@ class _AppState extends ConsumerState<App> {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        icon: const Icon(Amicons.lucide_log_out, size: 32),
+        icon: const Icon(LucideIcons.logOut, size: 32),
         title: const Text('Log out?'),
         content: const Text(
           'You will need to sign in again to access your account.',
@@ -162,6 +163,11 @@ class _AppState extends ConsumerState<App> {
 
     if (confirmed == true) {
       await FirebaseAuth.instance.signOut();
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (conetxt) => LoginScreen()),
+        (route) => false,
+      );
     }
   }
 
@@ -180,7 +186,7 @@ class _AppState extends ConsumerState<App> {
         centerTitle: false,
         actions: [
           PopupMenuButton<String>(
-            icon: const Icon(Icons.more_vert_rounded),
+            icon: const Icon(LucideIcons.moreVertical),
             offset: const Offset(0, 44), // drops below the button
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
@@ -206,7 +212,7 @@ class _AppState extends ConsumerState<App> {
               PopupMenuItem(
                 value: 'profile',
                 child: ListTile(
-                  leading: Icon(Icons.person_rounded),
+                  leading: Icon(LucideIcons.user),
                   title: Text('Profile'),
                   contentPadding: EdgeInsets.zero,
                 ),
@@ -214,7 +220,7 @@ class _AppState extends ConsumerState<App> {
               PopupMenuItem(
                 value: 'settings',
                 child: ListTile(
-                  leading: Icon(Icons.settings_rounded),
+                  leading: Icon(LucideIcons.settings),
                   title: Text('Settings'),
                   contentPadding: EdgeInsets.zero,
                 ),
@@ -222,7 +228,7 @@ class _AppState extends ConsumerState<App> {
               PopupMenuItem(
                 value: 'about',
                 child: ListTile(
-                  leading: Icon(Icons.info_outline),
+                  leading: Icon(LucideIcons.info),
                   title: Text('About'),
                   contentPadding: EdgeInsets.zero,
                 ),
@@ -231,7 +237,7 @@ class _AppState extends ConsumerState<App> {
               PopupMenuItem(
                 value: 'logout',
                 child: ListTile(
-                  leading: Icon(Icons.logout_rounded),
+                  leading: Icon(LucideIcons.logOut),
                   title: Text('Log out'),
                   contentPadding: EdgeInsets.zero,
                 ),
@@ -273,19 +279,19 @@ class _AppState extends ConsumerState<App> {
               type: BottomNavigationBarType.fixed,
               items: const [
                 BottomNavigationBarItem(
-                  icon: Icon(Amicons.flaticon_home_rounded),
+                  icon: Icon(LucideIcons.home),
                   label: 'Home',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Amicons.vuesax_command_square_fill),
+                  icon: Icon(LucideIcons.compass),
                   label: 'Mentor',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Amicons.flaticon_chart_network_rounded),
+                  icon: Icon(LucideIcons.plusSquare),
                   label: 'Compose',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Amicons.vuesax_command_square),
+                  icon: Icon(LucideIcons.boxes),
                   label: 'Clusters',
                 ),
               ],

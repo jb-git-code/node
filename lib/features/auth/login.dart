@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 import 'package:node/app.dart';
@@ -95,8 +96,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       });
                     },
                     icon: (isPasswordHidden)
-                        ? Icon(Icons.visibility)
-                        : Icon(Icons.visibility_off),
+                        ? const Icon(LucideIcons.eye)
+                        : const Icon(LucideIcons.eyeOff),
                   ),
                 ),
               ),

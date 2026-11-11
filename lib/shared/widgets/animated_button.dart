@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:node/app.dart';
 import 'package:node/core/themes/app_colors.dart';
 import 'package:node/core/themes/app_ui_config.dart';
@@ -49,9 +50,11 @@ class _AnimatedAuthButtonState extends State<AnimatedAuthButton> {
         SnackBar(
           content: Text(
             errorMessage,
-            style: const TextStyle(color: Colors.white),
+            // style: const TextStyle(color: Colors.white),
           ),
-          backgroundColor: Colors.red.shade400, // Or use your AppColors.error
+          backgroundColor: Theme.of(
+            context,
+          ).colorScheme.error, // Or use your AppColors.error
           behavior: SnackBarBehavior.floating, // Makes it look modern
           margin: const EdgeInsets.all(16),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -73,7 +76,9 @@ class _AnimatedAuthButtonState extends State<AnimatedAuthButton> {
         width: isIdle ? MediaQuery.of(context).size.width : 50,
         height: 50,
         decoration: BoxDecoration(
-          color: isSuccess ? AppColors.success : AppColors.primaryGreen,
+          color: isSuccess
+              ? Theme.of(context).colorScheme.surface
+              : Theme.of(context).colorScheme.primary,
           borderRadius: isIdle ? AppUI.cardRadius : BorderRadius.circular(25),
         ),
         child: Material(
@@ -92,24 +97,24 @@ class _AnimatedAuthButtonState extends State<AnimatedAuthButton> {
     if (isIdle) {
       return Text(
         widget.label,
-        style: const TextStyle(
-          color: AppColors.textPrimary,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.surface,
           fontWeight: FontWeight.bold,
           fontSize: 16,
         ),
       );
     } else if (isSuccess) {
-      return const Icon(Icons.check, color: AppColors.surfaceWhite);
+      return const Icon(LucideIcons.check, color: AppColors.surfaceWhite);
     } else {
       // THE ANIMATION SLOT
       // Replace this native spinner with your vector animation:
       // return Lottie.asset('assets/animations/loading.json');
       // return const RiveAnimation.asset('assets/animations/spinner.riv');
-      return const SizedBox(
+      return SizedBox(
         height: 24,
         width: 24,
         child: CircularProgressIndicator(
-          color: AppColors.textPrimary,
+          color: Theme.of(context).colorScheme.onSurface,
           strokeWidth: 2.5,
         ),
       );

@@ -1,4 +1,4 @@
-import 'package:amicons/amicons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +29,7 @@ class _SignupScreenState extends State<SignupScreen> {
   bool isPasswordHidden = false;
 
   Future<void> addUser() async {
+    if (_email.text == '' || _name.text == '' || _pass.text == '') return;
     try {
       final user = FirebaseAuth.instance.currentUser;
       await FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
@@ -60,13 +61,10 @@ class _SignupScreenState extends State<SignupScreen> {
         MaterialPageRoute(builder: (conext) => App()),
         (route) => false,
       );
-      final snackbar = SnackBar(
-        backgroundColor: AppColors.success,
-        content: Text('Registration Successful'),
-      );
+      final snackbar = SnackBar(content: Text('Registration Successful'));
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
-    } catch (e) {
-      throw e.toString();
+    } on FirebaseAuth catch (e) {
+      throw Exception(e.toString());
     } finally {
       setState(() {
         isRegistering = false;
@@ -83,10 +81,10 @@ class _SignupScreenState extends State<SignupScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const SizedBox(height: 50),
+              const SizedBox(height: 80),
               Lottie.asset(
                 'assets/animations/crab.json',
-                height: 220,
+                height: 200,
                 width: 350,
                 fit: BoxFit.cover,
               ),
@@ -130,8 +128,8 @@ class _SignupScreenState extends State<SignupScreen> {
                       });
                     },
                     icon: (isPasswordHidden)
-                        ? Icon(Icons.visibility)
-                        : Icon(Icons.visibility_off),
+                        ? const Icon(LucideIcons.eye)
+                        : const Icon(LucideIcons.eyeOff),
                   ),
                 ),
               ),

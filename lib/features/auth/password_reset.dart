@@ -52,14 +52,6 @@ class PasswordReset extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               FilledButton(
-                style: ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(
-                    AppColors.primaryGreen,
-                  ),
-                  foregroundColor: WidgetStatePropertyAll(
-                    AppColors.textPrimary,
-                  ),
-                ),
                 onPressed: () {
                   resetPassword(context);
                 },

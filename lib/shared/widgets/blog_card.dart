@@ -1,4 +1,4 @@
-import 'package:amicons/amicons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
@@ -31,151 +31,160 @@ class _BlogCardState extends ConsumerState<BlogCard> {
         user != null && widget.post.isSavedBy.contains(user.uid);
     final bool isStarred =
         user != null && widget.post.isStarredBy.contains(user.uid);
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: GestureDetector(
-        onLongPress: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => ExpandBlogCard(post: widget.post),
-            ),
-          );
-        },
-        child: Container(
-          height: 300,
-          width: MediaQuery.of(context).size.width * .80,
-
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: Color(0xFFA2D788),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // title
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        widget.post.title,
-                        style: AppTextStyles.pageTitle(context),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Spacer(),
-                    IconButton(
-                      onPressed: () async {
-                        await Clipboard.setData(
-                          ClipboardData(text: widget.post.description),
-                        );
-                      },
-                      icon: Icon(Amicons.lucide_copy, color: Colors.black),
-                    ),
-                  ],
+    return Hero(
+      tag: 'post-${widget.post.postId}',
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ExpandBlogCard(
+                  post: widget.post,
+                  heroTag: 'post-${widget.post.postId}',
                 ),
-                const SizedBox(height: 20),
-                // des
-                // Example implementation for reading a Node
-                MarkdownBody(
-                  data: widget
-                      .post
-                      .description, // String containing the raw markdown
-                  styleSheet: MarkdownStyleSheet(
-                    p: AppTextStyles.bodyMain,
-                    h1: AppTextStyles.heading1,
-                    code: AppTextStyles.codeSnippet.copyWith(
-                      backgroundColor: AppColors.codeBackground,
-                    ),
-                    codeblockDecoration: BoxDecoration(
-                      color: AppColors.codeBackground,
-                      borderRadius: AppUI.cardRadius,
+              ),
+            );
+          },
+          child: Container(
+            height: 300,
+            width: MediaQuery.of(context).size.width * .80,
+
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // title
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          widget.post.title,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontSize: 28,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          await Clipboard.setData(
+                            ClipboardData(text: widget.post.description),
+                          );
+                        },
+                        icon: Icon(
+                          LucideIcons.copy,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  // des
+                  // Example implementation for reading a Node
+                  Expanded(
+                    child: Text(
+                      widget.post.description,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
                     ),
                   ),
-                ),
-                Spacer(),
+                  Spacer(),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.post.authorName,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.post.authorName,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                       ),
-                    ),
-                    Spacer(),
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: isUploading || user == null
-                              ? null
-                              : () async {
-                                  setState(() {
-                                    isUploading = true;
-                                  });
-                                  try {
-                                    final bool isStarred = widget
-                                        .post
-                                        .isStarredBy
-                                        .contains(user.uid);
-                                    await FirebaseService().toggleStars(
-                                      widget.post.postId,
-                                      isStarred,
-                                    );
-                                  } finally {
-                                    if (mounted) {
-                                      setState(() {
-                                        isUploading = false;
-                                      });
+                      Spacer(),
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: isUploading || user == null
+                                ? null
+                                : () async {
+                                    setState(() {
+                                      isUploading = true;
+                                    });
+                                    try {
+                                      final bool isStarred = widget
+                                          .post
+                                          .isStarredBy
+                                          .contains(user.uid);
+                                      await FirebaseService().toggleStars(
+                                        widget.post.postId,
+                                        isStarred,
+                                      );
+                                    } finally {
+                                      if (mounted) {
+                                        setState(() {
+                                          isUploading = false;
+                                        });
+                                      }
                                     }
-                                  }
-                                },
-                          icon: Icon(
-                            isStarred
-                                ? Amicons.remix_star_fill
-                                : Amicons.remix_star,
-                            color: Colors.black,
+                                  },
+                            icon: Icon(
+                              isStarred ? Icons.star : Icons.star_border,
+                              color: isStarred
+                                  ? Colors.green
+                                  : Theme.of(context).colorScheme.primary,
+                              size: 28,
+                            ),
                           ),
-                        ),
-                        Text(
-                          widget.post.isStarredBy.length.toString(),
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(width: 10),
-                    IconButton(
-                      onPressed: isSaving || user == null
-                          ? null
-                          : () async {
-                              setState(() {
-                                isSaving = true;
-                              });
-                              try {
-                                await FirebaseService().toggleSave(
-                                  widget.post.postId,
-                                );
-                              } finally {
-                                if (mounted) {
-                                  setState(() {
-                                    isSaving = false;
-                                  });
-                                }
-                              }
-                            },
-                      icon: Icon(
-                        isSaved ? Icons.bookmark : Icons.bookmark_border,
-                        color: isSaved ? Colors.black : Colors.black54,
+                          Text(
+                            widget.post.isStarredBy.length.toString(),
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      const SizedBox(width: 10),
+                      IconButton(
+                        onPressed: isSaving || user == null
+                            ? null
+                            : () async {
+                                setState(() {
+                                  isSaving = true;
+                                });
+                                try {
+                                  await FirebaseService().toggleSave(
+                                    widget.post.postId,
+                                  );
+                                } finally {
+                                  if (mounted) {
+                                    setState(() {
+                                      isSaving = false;
+                                    });
+                                  }
+                                }
+                              },
+                        icon: Icon(
+                          isSaved ? Icons.bookmark : Icons.bookmark_border,
+                          color: isSaved
+                              ? Colors.green
+                              : Theme.of(context).colorScheme.primary,
+                          size: 28,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
