@@ -61,11 +61,40 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   savedCountAsync: savedCountAsync,
                   totalStarsAsync: totalStarsAsync,
                 ),
+                const SizedBox(height: 40),
+                // Profile Data
+                GestureDetector(
+                  onTap: () {
+                    // navigation to joined clusters page
+                  },
+                  child: Container(
+                    height: 60,
+                    width: MediaQuery.of(context).size.width * .90,
+                    decoration: BoxDecoration(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 20),
+                        Icon(
+                          LucideIcons.network,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          'Joined Clusters',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 20),
-                //theme slider
-                ThemeSlider(),
-                const SizedBox(height: 20),
-                // Settings
                 GestureDetector(
                   onTap: () {
                     Navigator.push(

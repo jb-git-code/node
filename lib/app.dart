@@ -11,7 +11,9 @@ import 'package:node/features/nodes/providers/current_user_provider.dart';
 import 'package:node/features/nodes/views/compose.dart';
 import 'package:node/features/feed/views/explore.dart';
 import 'package:node/features/feed/views/home.dart';
+import 'package:node/user/about.dart';
 import 'package:node/user/profile.dart';
+import 'package:node/user/settings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class App extends ConsumerStatefulWidget {
@@ -196,10 +198,16 @@ class _AppState extends ConsumerState<App> {
                   );
                   break;
                 case 'settings':
-                  // navigate to settings
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Settings()),
+                  );
                   break;
                 case 'about':
-                  openAbout();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AboutScreen()),
+                  );
                 case 'logout':
                   logoutPopUp(context);
                   break;

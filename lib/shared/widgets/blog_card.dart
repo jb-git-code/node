@@ -29,6 +29,13 @@ class _BlogCardState extends ConsumerState<BlogCard> {
         user != null && widget.post.isStarredBy.contains(user.uid);
     return Hero(
       tag: 'post-${widget.post.postId}',
+      flightShuttleBuilder:
+          (context, animation, direction, fromContext, toContext) {
+            return Material(
+              type: MaterialType.transparency,
+              child: toContext.widget,
+            );
+          },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GestureDetector(

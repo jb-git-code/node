@@ -24,7 +24,7 @@ class ThemeSlider extends ConsumerWidget {
 
     return Container(
       height: 60,
-      width: 350,
+      width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF1E1E1E) : const Color(0xFFE5E5EA),

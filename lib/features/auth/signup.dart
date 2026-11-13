@@ -21,12 +21,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
   final TextEditingController _name = TextEditingController();
 
-  bool isRegistering = false;
-
   bool isPasswordHidden = false;
 
   Future<void> addUser() async {
-    if (_email.text == '' || _name.text == '' || _pass.text == '') return;
     try {
       final user = FirebaseAuth.instance.currentUser;
       await FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
@@ -38,20 +35,38 @@ class _SignupScreenState extends State<SignupScreen> {
         'starsEarned': 0,
         'joinedClusters': [],
       });
-    } catch (e) {
+    } on FirebaseException catch (e) {
       throw e.toString();
     }
   }
 
   Future<void> register(BuildContext context) async {
-    setState(() {
-      isRegistering = true;
-    });
+    if (_email.text.trim().isEmpty ||
+        _name.text.trim().isEmpty ||
+        _pass.text.trim().isEmpty) {
+      throw 'Credentials Empty';
+    }
+    UserCredential cred;
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      cred = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _email.text,
         password: _pass.text,
       );
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case 'email-already-in-use':
+          throw Exception('An account already exists with this email.');
+        case 'weak-password':
+          throw Exception('Password is too weak.');
+        case 'invalid-email':
+          throw Exception('Please enter a valid email address.');
+        case 'network-request-failed':
+          throw Exception('Network error. Check your connection.');
+        default:
+          throw Exception('Registration failed. Please try again.');
+      }
+    }
+    try {
       await addUser();
       if (!context.mounted) return;
       Navigator.pushAndRemoveUntil(
@@ -61,12 +76,9 @@ class _SignupScreenState extends State<SignupScreen> {
       );
       final snackbar = SnackBar(content: Text('Registration Successful'));
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
-    } on FirebaseAuth catch (e) {
-      throw Exception(e.toString());
-    } finally {
-      setState(() {
-        isRegistering = false;
-      });
+    } catch (e) {
+      await cred.user?.delete();
+      throw Exception('An unexpected error occurred.');
     }
   }
 
@@ -145,8 +157,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 onPressed: () async {
                   // This delay simulates network latency.
                   // Replace with actual FirebaseAuth sign-in logic.
-                  register(context);
-                  await Future.delayed(const Duration(seconds: 2));
+                  await register(context);
 
                   // If the authentication throws an error, the button will
                   // automatically expand back to the "idle" state.
