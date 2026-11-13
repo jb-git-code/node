@@ -78,7 +78,7 @@ class _AnimatedAuthButtonState extends State<AnimatedAuthButton> {
         height: 50,
         decoration: BoxDecoration(
           color: isSuccess
-              ? Theme.of(context).colorScheme.surface
+              ? Colors.green
               : Theme.of(context).colorScheme.primary,
           borderRadius: isIdle ? AppUI.cardRadius : BorderRadius.circular(25),
         ),

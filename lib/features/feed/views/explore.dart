@@ -31,7 +31,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
     final filterPosts = ref.watch(filterListProvider);
 
     return Padding(
-      padding: EdgeInsets.only(left: 8, right: 8, bottom: 60, top: 8),
+      padding: EdgeInsets.only(left: 8, right: 8, bottom: 8, top: 8),
       child: Column(
         children: [
           buildCategories(context),
@@ -74,40 +74,35 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   Widget buildCategories(BuildContext context) {
     final selectedCategory = ref.watch(selectedCategoryProvider);
     return Padding(
-      padding: const EdgeInsets.only(left: 4.0, right: 4.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Wrap(
-            spacing: 17.0,
-            runSpacing: 10.0,
-            children: _categories.map((category) {
-              final isSelected = (selectedCategory == category);
-              return FilterChip(
-                label: Text(category),
-                selected: isSelected,
-                onSelected: (_) => _toggleCategory(category),
-                labelStyle: TextStyle(
-                  color: isSelected
-                      ? Theme.of(context).colorScheme.surface
-                      : Theme.of(context).colorScheme.primary,
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                ),
-                backgroundColor: isSelected
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.surface,
-                selectedColor: Theme.of(context).colorScheme.primary,
-                checkmarkColor: !isSelected
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.surface,
-                showCheckmark: true,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              );
-            }).toList(),
-          ),
-        ],
+      padding: const EdgeInsets.only(left: 8),
+      child: Wrap(
+        spacing: MediaQuery.of(context).size.width * 0.04,
+        runSpacing: 10.0,
+        children: _categories.map((category) {
+          final isSelected = (selectedCategory == category);
+          return FilterChip(
+            label: Text(category),
+            selected: isSelected,
+            onSelected: (_) => _toggleCategory(category),
+            labelStyle: TextStyle(
+              color: isSelected
+                  ? Theme.of(context).colorScheme.surface
+                  : Theme.of(context).colorScheme.primary,
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+            ),
+            backgroundColor: isSelected
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.surface,
+            selectedColor: Theme.of(context).colorScheme.primary,
+            checkmarkColor: !isSelected
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.surface,
+            showCheckmark: true,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          );
+        }).toList(),
       ),
     );
   }

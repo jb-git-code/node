@@ -40,10 +40,13 @@ class EdgeActionButton extends StatelessWidget {
               currentUserId: currentUserId,
               targetUserId: targetUserId,
             ),
-            icon: Icon(LucideIcons.link2, color: Colors.lightGreenAccent),
+            icon: Icon(
+              LucideIcons.link2,
+              color: Theme.of(context).colorScheme.surface,
+            ),
             label: Text(
               'Connect Node',
-              style: TextStyle(color: Colors.lightGreenAccent),
+              style: TextStyle(color: Theme.of(context).colorScheme.surface),
             ),
           );
         }

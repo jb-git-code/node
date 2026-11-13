@@ -51,7 +51,7 @@ class _LoadingWidget extends StatelessWidget {
             ),
             child: Center(
               child: Lottie.asset(
-                'assets/animations/node_spinner.json', // Your consistent animation
+                'assets/animations/node_connect.json', // Your consistent animation
                 width: 80,
                 height: 80,
               ),

@@ -7,7 +7,6 @@ import 'package:node/features/feed/views/users_screen.dart';
 import 'package:node/features/nodes/providers/current_user_provider.dart';
 import 'package:node/features/nodes/views/saved_nodes.dart';
 import 'package:node/shared/widgets/profile_card.dart';
-import 'package:node/shared/widgets/theme_slider.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -29,6 +28,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   //     ref.invalidate(savedPostsCountProvider);
   //     ref.invalidate(totalStarsEarnedProvider);
   //   });
+  // }
+
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   ref.invalidate(currentUserProvider);
   // }
 
   @override

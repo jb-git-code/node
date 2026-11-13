@@ -152,7 +152,7 @@ class _ComposeBlogState extends ConsumerState<ComposeBlog> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 600,
+      height: MediaQuery.of(context).size.height * .85,
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Padding(
@@ -203,7 +203,7 @@ class _ComposeBlogState extends ConsumerState<ComposeBlog> {
                   border: OutlineInputBorder(borderRadius: AppUI.cardRadius),
                   hintText: 'Description',
                 ),
-                maxLines: 15,
+                maxLines: 25,
               ),
             ],
           ),
@@ -215,34 +215,39 @@ class _ComposeBlogState extends ConsumerState<ComposeBlog> {
   Widget buildCategories(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
-      child: Wrap(
-        spacing: 16.0, // Gap between chips horizontally
-        runSpacing: 8, // Gap between chips vertically
-        children: _categories.map((category) {
-          final isSelected = (selectedCategory == category);
-          return FilterChip(
-            label: Text(category),
-            selected: isSelected,
-            onSelected: (_) => _toggleCategory(category),
-            labelStyle: TextStyle(
-              color: isSelected
-                  ? Theme.of(context).colorScheme.surface
-                  : Theme.of(context).colorScheme.primary,
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-            ),
-            backgroundColor: isSelected
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.surface,
-            selectedColor: Theme.of(context).colorScheme.primary,
-            checkmarkColor: !isSelected
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.surface,
-            showCheckmark: true,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-          );
-        }).toList(),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Wrap(
+          spacing:
+              MediaQuery.of(context).size.width *
+              0.04, // Gap between chips horizontally
+          runSpacing: 8, // Gap between chips vertically
+          children: _categories.map((category) {
+            final isSelected = (selectedCategory == category);
+            return FilterChip(
+              label: Text(category),
+              selected: isSelected,
+              onSelected: (_) => _toggleCategory(category),
+              labelStyle: TextStyle(
+                color: isSelected
+                    ? Theme.of(context).colorScheme.surface
+                    : Theme.of(context).colorScheme.primary,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              ),
+              backgroundColor: isSelected
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.surface,
+              selectedColor: Theme.of(context).colorScheme.primary,
+              checkmarkColor: !isSelected
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.surface,
+              showCheckmark: true,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            );
+          }).toList(),
+        ),
       ),
     );
   }

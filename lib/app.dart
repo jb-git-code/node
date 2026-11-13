@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/features/auth/login.dart';
-import 'package:node/features/feed/providers/count_provider.dart';
 import 'package:node/features/clusters/views/clusters_screen.dart';
 import 'package:node/features/nodes/providers/current_user_provider.dart';
 import 'package:node/features/nodes/views/compose.dart';
@@ -49,12 +48,6 @@ class _AppState extends ConsumerState<App> {
   // }
 
   void changeTab(int index) {
-    if (index == 3) {
-      ref.invalidate(createdPostsCountProvider);
-      ref.invalidate(savedPostsCountProvider);
-      ref.invalidate(totalStarsEarnedProvider);
-      ref.invalidate(currentUserProvider);
-    }
     HapticFeedback.selectionClick();
     setState(() {
       _currentIndex = index;
@@ -162,6 +155,7 @@ class _AppState extends ConsumerState<App> {
 
     if (confirmed == true) {
       await FirebaseAuth.instance.signOut();
+      // ref.invalidate(currentUserProvider);
       if (!context.mounted) return;
       Navigator.pushAndRemoveUntil(
         context,
@@ -174,6 +168,9 @@ class _AppState extends ConsumerState<App> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.invalidate(currentUserProvider);
+    });
   }
 
   @override

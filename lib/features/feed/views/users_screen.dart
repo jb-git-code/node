@@ -24,7 +24,7 @@ class _UsersScreenState extends ConsumerState<UsersScreen> {
     final usersAsync = ref.watch(userListProvider);
     final currUsr = FirebaseAuth.instance.currentUser;
     return Scaffold(
-      appBar: AppBar(title: Text('Connections'), centerTitle: true),
+      appBar: AppBar(title: Text('Connections'), centerTitle: false),
       body: usersAsync.when(
         data: (data) {
           return ListView.builder(

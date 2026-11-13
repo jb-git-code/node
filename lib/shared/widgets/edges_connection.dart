@@ -31,7 +31,10 @@ class EdgeConnectionTile extends StatelessWidget {
           ),
         ),
       ),
-      title: Text(usr.name, style: AppTextStyles.bodyMain),
+      title: Text(
+        usr.name,
+        style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+      ),
       subtitle: Text(usr.collegeId, style: AppTextStyles.caption),
       trailing: EdgeActionButton(currentUserId: cu, targetUserId: usr.authorId),
     );
