@@ -1,11 +1,7 @@
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:node/core/themes/app_colors.dart';
-import 'package:node/core/themes/app_text_styles.dart';
-import 'package:node/core/themes/app_ui_config.dart';
 import 'package:node/shared/models/post.dart';
 import 'package:node/core/services/firebase_service.dart';
 import 'package:flutter/services.dart';

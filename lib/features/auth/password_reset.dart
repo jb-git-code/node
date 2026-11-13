@@ -1,11 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:node/app.dart';
-import 'package:node/core/themes/app_colors.dart';
-import 'package:node/features/feed/views/home.dart';
 import 'package:node/features/auth/login.dart';
-import 'package:node/features/auth/signup.dart';
 
 class PasswordReset extends StatelessWidget {
   PasswordReset({super.key});
@@ -15,6 +10,7 @@ class PasswordReset extends StatelessWidget {
   Future<void> resetPassword(BuildContext context) async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: _email.text);
+      if (!context.mounted) return;
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (conext) => LoginScreen()),

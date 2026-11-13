@@ -8,6 +8,7 @@ class CarouselChip extends ConsumerWidget {
   final FieldCategories selectedCategory;
 
   const CarouselChip({
+    super.key,
     required this.label,
     required this.category,
     required this.selectedCategory,

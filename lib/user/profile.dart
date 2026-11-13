@@ -1,16 +1,13 @@
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/features/feed/providers/count_provider.dart';
 import 'package:node/features/auth/login.dart';
-import 'package:node/features/clusters/views/clusters_screen.dart';
 import 'package:node/features/feed/views/users_screen.dart';
 import 'package:node/features/nodes/providers/current_user_provider.dart';
 import 'package:node/features/nodes/views/saved_nodes.dart';
 import 'package:node/shared/widgets/profile_card.dart';
 import 'package:node/shared/widgets/theme_slider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});

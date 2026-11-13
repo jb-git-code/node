@@ -28,7 +28,7 @@ class UserModel {
       email: data['email'] ?? '',
       nodesCreated: data['nodesCreated'] ?? 0,
       starsEarned: data['starsEarned'] ?? 0,
-      joinedClusters:  List<String>.from(data['joinedClusters'] ?? []),
+      joinedClusters: List<String>.from(data['joinedClusters'] ?? []),
     );
   }
 

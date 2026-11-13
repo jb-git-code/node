@@ -1,15 +1,12 @@
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:node/core/utils/loading_overlay.dart';
 import 'package:node/features/auth/login.dart';
 import 'package:node/features/feed/providers/count_provider.dart';
 import 'package:node/features/clusters/views/clusters_screen.dart';
-import 'package:node/features/feed/views/users_screen.dart';
 import 'package:node/features/nodes/providers/current_user_provider.dart';
 import 'package:node/features/nodes/views/compose.dart';
 import 'package:node/features/feed/views/explore.dart';
@@ -107,7 +104,7 @@ class _AppState extends ConsumerState<App> {
                   child: ListView.separated(
                     controller: scrollController,
                     itemCount: 8,
-                    separatorBuilder: (_, __) => const Divider(height: 1),
+                    separatorBuilder: (_, _) => const Divider(height: 1),
                     itemBuilder: (context, index) {
                       return ListTile(
                         leading: const CircleAvatar(
@@ -163,6 +160,7 @@ class _AppState extends ConsumerState<App> {
 
     if (confirmed == true) {
       await FirebaseAuth.instance.signOut();
+      if (!context.mounted) return;
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (conetxt) => LoginScreen()),
@@ -173,7 +171,6 @@ class _AppState extends ConsumerState<App> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 

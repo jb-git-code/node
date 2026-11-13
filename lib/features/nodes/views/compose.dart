@@ -1,21 +1,16 @@
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:node/core/themes/app_colors.dart';
-import 'package:node/core/themes/app_text_styles.dart';
 import 'package:node/core/themes/app_ui_config.dart';
 import 'package:node/core/utils/loading_overlay.dart';
 import 'package:node/features/nodes/providers/current_user_provider.dart';
 import 'package:node/shared/models/post.dart';
 import 'package:node/app.dart';
-import 'package:node/features/feed/views/home.dart';
 import 'package:uuid/uuid.dart';
 
 class ComposeBlog extends ConsumerStatefulWidget {
-  ComposeBlog({super.key});
+  const ComposeBlog({super.key});
 
   @override
   ConsumerState<ComposeBlog> createState() => _ComposeBlogState();
@@ -73,10 +68,10 @@ class _ComposeBlogState extends ConsumerState<ComposeBlog> {
       await Future.delayed(Duration(seconds: 2));
       _des.clear();
       _title.clear();
-      if (context.mounted) {
+      if (mounted) {
         LoadingOverlay.hide(context);
       }
-      if (context.mounted) {
+      if (mounted) {
         Navigator.of(
           context,
         ).push(MaterialPageRoute(builder: (context) => const App()));

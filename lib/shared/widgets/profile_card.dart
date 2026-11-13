@@ -109,7 +109,7 @@ class CompletionProfileCard extends StatelessWidget {
       tween: Tween(begin: 0, end: pct),
       duration: 1400.ms,
       curve: Curves.easeOutCubic,
-      builder: (_, p, __) => SizedBox(
+      builder: (_, p, _) => SizedBox(
         width: 104,
         height: 104,
         child: Stack(
@@ -177,7 +177,7 @@ class CompletionProfileCard extends StatelessWidget {
               tween: IntTween(begin: 0, end: n),
               duration: 1000.ms,
               curve: Curves.easeOutCubic,
-              builder: (_, val, __) => Text(
+              builder: (_, val, _) => Text(
                 '$val',
                 style: TextStyle(
                   fontSize: 15,
@@ -189,7 +189,7 @@ class CompletionProfileCard extends StatelessWidget {
             ),
             loading: () =>
                 Text('–', style: TextStyle(color: colors.onSurfaceVariant)),
-            error: (_, __) => Text(
+            error: (_, _) => Text(
               '!',
               style: TextStyle(color: colors.error), // the red error color
             ),

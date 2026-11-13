@@ -1,14 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/shared/models/post.dart';
 import 'package:node/features/feed/providers/carousel_chip.dart';
 import 'package:node/features/feed/providers/filter_provider.dart';
 import 'package:node/features/feed/providers/posts_provider.dart';
-import 'package:node/core/themes/providers/theme_provider.dart';
 import 'package:node/shared/widgets/blog_card.dart';
-import 'package:node/shared/widgets/expand_blog_card.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});

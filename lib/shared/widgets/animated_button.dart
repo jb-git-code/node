@@ -11,10 +11,10 @@ class AnimatedAuthButton extends StatefulWidget {
   final Future<void> Function() onPressed;
 
   const AnimatedAuthButton({
-    Key? key,
+    super.key,
     required this.label,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   State<AnimatedAuthButton> createState() => _AnimatedAuthButtonState();
@@ -34,6 +34,7 @@ class _AnimatedAuthButtonState extends State<AnimatedAuthButton> {
         setState(() => _state = ButtonState.success);
       }
       await Future.delayed(Duration(seconds: 1));
+      if (!mounted) return;
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => App()),
         (route) => false,

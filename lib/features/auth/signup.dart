@@ -2,16 +2,13 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 import 'package:node/app.dart';
-import 'package:node/core/themes/app_colors.dart';
 import 'package:node/features/auth/login.dart';
-import 'package:node/shared/models/user.dart';
 import 'package:node/shared/widgets/animated_button.dart';
 
 class SignupScreen extends StatefulWidget {
-  SignupScreen({super.key});
+  const SignupScreen({super.key});
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
@@ -56,6 +53,7 @@ class _SignupScreenState extends State<SignupScreen> {
         password: _pass.text,
       );
       await addUser();
+      if (!context.mounted) return;
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (conext) => App()),

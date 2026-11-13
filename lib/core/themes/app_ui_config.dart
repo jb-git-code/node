@@ -20,7 +20,7 @@ class AppUI {
   // Standardized Box Shadows
   static List<BoxShadow> defaultShadow = [
     BoxShadow(
-      color: AppColors.textPrimary.withOpacity(0.05),
+      color: AppColors.textPrimary.withValues(alpha: 0.05),
       blurRadius: 10,
       offset: const Offset(0, 4),
     ),

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:node/shared/models/post.dart';
-import 'package:node/shared/widgets/blog_card.dart';
 import 'package:node/shared/widgets/expand_blog_card.dart';
 
 class SavedNodes extends StatelessWidget {

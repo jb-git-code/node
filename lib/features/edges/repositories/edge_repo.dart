@@ -5,15 +5,18 @@ class EdgeRepository {
 
   String _generateEdgeId(String uid1, String uid2) {
     List<String> ids = [uid1, uid2];
-    ids.sort(); 
+    ids.sort();
     return '${ids[0]}_${ids[1]}';
   }
 
-  Future<void> sendEdgeRequest({required String currentUserId, required String targetUserId}) async {
+  Future<void> sendEdgeRequest({
+    required String currentUserId,
+    required String targetUserId,
+  }) async {
     final edgeId = _generateEdgeId(currentUserId, targetUserId);
-    
+
     await _firestore.collection('edges').doc(edgeId).set({
-      'participants': [currentUserId, targetUserId], 
+      'participants': [currentUserId, targetUserId],
       'senderId': currentUserId,
       'receiverId': targetUserId,
       'status': 'pending',

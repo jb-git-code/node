@@ -1,16 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
-import 'package:node/app.dart';
-import 'package:node/features/feed/views/home.dart';
 import 'package:node/features/auth/password_reset.dart';
 import 'package:node/features/auth/signup.dart';
 import 'package:node/shared/widgets/animated_button.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();

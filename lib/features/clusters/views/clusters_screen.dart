@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/features/clusters/providers/cluster_provider.dart';
-import 'package:node/features/clusters/repository/cluster_repo.dart';
 import 'package:node/features/nodes/providers/current_user_provider.dart';
 import 'package:node/shared/widgets/cluster_card.dart';
 

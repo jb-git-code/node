@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Primary Accents
-  static const Color primaryGreen = Color(0xFFA3E635); 
+  static const Color primaryGreen = Color(0xFFA3E635);
   static const Color primaryPurple = Color(0xFF6D28D9);
 
   // Backgrounds & Surfaces

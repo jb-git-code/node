@@ -11,7 +11,7 @@ class LoadingOverlay {
       // Prevents the user from closing it by tapping outside
       barrierDismissible: false,
       // Makes the background slightly darkened/blurred
-      barrierColor: Colors.black.withOpacity(0.3),
+      barrierColor: Colors.black.withValues(alpha: 0.3),
       builder: (_) => const _LoadingWidget(),
     );
   }
@@ -25,13 +25,13 @@ class LoadingOverlay {
 }
 
 class _LoadingWidget extends StatelessWidget {
-  const _LoadingWidget({Key? key}) : super(key: key);
+  const _LoadingWidget();
 
   @override
   Widget build(BuildContext context) {
     // WillPopScope prevents the Android back button from dismissing the loader
-    return WillPopScope(
-      onWillPop: () async => false,
+    return PopScope(
+      canPop: false,
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
         child: Center(
@@ -43,7 +43,7 @@ class _LoadingWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 10,
                   spreadRadius: 2,
                 ),

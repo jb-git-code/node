@@ -3,17 +3,17 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:node/core/themes/app_colors.dart';
 import 'package:node/core/themes/app_ui_config.dart';
-import 'package:node/features/edges/repositories/edge-repo.dart';
+import 'package:node/features/edges/repositories/edge_repo.dart';
 
 class EdgeActionButton extends StatelessWidget {
   final String currentUserId;
   final String targetUserId;
 
   const EdgeActionButton({
-    Key? key,
+    super.key,
     required this.currentUserId,
     required this.targetUserId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
