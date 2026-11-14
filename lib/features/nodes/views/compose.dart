@@ -46,6 +46,20 @@ class _ComposeBlogState extends ConsumerState<ComposeBlog> {
         );
         return;
       }
+      if (selectedCategory == null) {
+        LoadingOverlay.hide(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: Duration(milliseconds: 1000),
+            content: Text(
+              'Select Category',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+        return;
+      }
       final newPost = Post(
         postId: psid,
         authorId: user.authorId,
@@ -77,7 +91,7 @@ class _ComposeBlogState extends ConsumerState<ComposeBlog> {
         ).push(MaterialPageRoute(builder: (context) => const App()));
       }
     } catch (e) {
-      throw e.toString();
+      throw Exception(e);
     }
   }
 

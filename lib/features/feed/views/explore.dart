@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:node/shared/models/post.dart';
 import 'package:node/features/feed/providers/posts_provider.dart';
 import 'package:node/shared/widgets/blog_card.dart';
@@ -28,15 +29,52 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final filterPosts = ref.watch(filterListProvider);
-
+    // final filterPosts = ref.watch(filterListProvider);
+    final filterBlogsAsync = ref.watch(filterBlogsProvider);
     return Padding(
       padding: EdgeInsets.only(left: 8, right: 8, bottom: 8, top: 8),
       child: Column(
         children: [
-          buildCategories(context),
+          Padding(
+            padding: const EdgeInsets.only(left: 8, right: 8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 45,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest,
+                    ),
+                    child: TextField(
+                      onChanged: (value) {
+                        ref.read(blogQueryProvider.notifier).state = value;
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Search Nodes',
+                        suffixIcon: IconButton(
+                          onPressed: () {},
+                          icon: Icon(LucideIcons.search),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 20),
+                // category filter for blogs
+                IconButton(
+                  icon: Icon(Icons.filter_list, size: 30),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
           const SizedBox(height: 10),
-          filterPosts.when(
+          // buildCategories(context),
+          // const SizedBox(height: 10),
+          filterBlogsAsync.when(
             data: (post) {
               return Expanded(
                 child: ListView.builder(

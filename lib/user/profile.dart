@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/features/feed/providers/count_provider.dart';
 import 'package:node/features/auth/login.dart';
-import 'package:node/features/feed/views/users_screen.dart';
+import 'package:node/features/feed/views/connections.dart';
 import 'package:node/features/nodes/providers/current_user_provider.dart';
 import 'package:node/features/nodes/views/saved_nodes.dart';
 import 'package:node/shared/widgets/profile_card.dart';

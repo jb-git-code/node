@@ -38,13 +38,13 @@ List<SocialLink> kSocialLinks = [
     label: 'Instagram',
     url: 'https://www.instagram.com/jayanshub18/',
     icon: LucideIcons.separatorVertical,
-    assetPath: 'assets/logos/instagram.jpg',
+    assetPath: 'assets/logos/instagram.png',
   ),
   SocialLink(
     label: 'X',
     url: 'https://x.com/JayanshuBh38322',
     icon: LucideIcons.separatorVertical, // demo icon, swap with an X png later
-    assetPath: 'assets/logos/x.jpg',
+    assetPath: 'assets/logos/x.png',
   ),
   SocialLink(
     label: 'LinkedIn',

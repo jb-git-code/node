@@ -180,6 +180,7 @@ class _AppState extends ConsumerState<App> {
       appBar: AppBar(
         title: Text('Node'),
         centerTitle: false,
+        toolbarHeight: 36,
         actions: [
           PopupMenuButton<String>(
             icon: const Icon(LucideIcons.moreVertical),
