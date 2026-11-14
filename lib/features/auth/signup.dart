@@ -34,6 +34,11 @@ class _SignupScreenState extends State<SignupScreen> {
         'nodesCreated': 0,
         'starsEarned': 0,
         'joinedClusters': [],
+        'privacy': {'showClusters': true, 'showSavedPosts': false},
+        'links': {'github': '', 'linkedin': ''},
+        'bio': '',
+        'primaryRoles': <String>[],
+        'skills': <String>[],
       });
     } on FirebaseException catch (e) {
       throw e.toString();
