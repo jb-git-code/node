@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:node/core/themes/app_text_styles.dart';
 import 'package:node/core/themes/app_ui_config.dart';
 import 'package:node/features/edges/views/edgess.dart';
-import 'package:node/features/nodes/views/node_profile.dart';
+import 'package:node/features/nodes/views/connection_profile.dart';
 import 'package:node/shared/models/user.dart';
 
 class EdgeConnectionTile extends StatelessWidget {
@@ -20,7 +20,9 @@ class EdgeConnectionTile extends StatelessWidget {
       leading: GestureDetector(
         onTap: () {
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => NodeProfile(usr: usr)),
+            MaterialPageRoute(
+              builder: (context) => PublicProfileScreen(uid: usr.authorId),
+            ),
           );
         },
         child: CircleAvatar(
