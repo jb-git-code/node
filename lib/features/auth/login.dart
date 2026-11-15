@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -23,17 +22,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> login(BuildContext context) async {
     try {
-      final cred = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _email.text,
         password: _pass.text,
       );
-      // temp doc update for old users
-
-      try {
-        await _backfillUserDoc(cred.user!.uid);
-      } catch (e) {
-        debugPrint('Backfill failed: $e');
-      }
     } on FirebaseAuthException catch (e) {
       String errorMessage = 'Authentication failed. Please try again.';
 
@@ -51,31 +43,6 @@ class _LoginScreenState extends State<LoginScreen> {
       throw Exception(errorMessage);
     } catch (e) {
       throw Exception('An unexpected error occurred.');
-    }
-  }
-
-  Future<void> _backfillUserDoc(String uid) async {
-    final ref = FirebaseFirestore.instance.collection('users').doc(uid);
-    final snap = await ref.get();
-    final data = snap.data() ?? {};
-
-    final missing = <String, dynamic>{};
-    if (data['skills'] == null) missing['skills'] = <String>[];
-    if (data['primaryRoles'] == null) missing['primaryRoles'] = <String>[];
-    if (data['privacy'] == null) {
-      missing['privacy'] = {'showClusters': true, 'showSavedPosts': false};
-    }
-    if (data['links'] == null) {
-      missing['links'] = {'github': '', 'linkedin': ''};
-    }
-
-    if (data['bio'] == null) missing['bio'] = '';
-    if (data['createdAt'] == null) {
-      missing['createdAt'] = FieldValue.serverTimestamp();
-    }
-
-    if (missing.isNotEmpty) {
-      await ref.set(missing, SetOptions(merge: true));
     }
   }
 

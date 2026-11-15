@@ -32,6 +32,15 @@ class _ComposeBlogState extends ConsumerState<ComposeBlog> {
   final TextEditingController _des = TextEditingController();
 
   void addNode() async {
+    if (_title.text.isEmpty || _des.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Theme.of(context).colorScheme.error,
+          content: Text('No Content Found'),
+        ),
+      );
+      return;
+    }
     LoadingOverlay.show(context);
     try {
       final psid = Uuid().v4();

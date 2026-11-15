@@ -1,0 +1,31 @@
+List<String> kRolesOptions = [
+  'frontend',
+  'backend',
+  'ai-ml',
+  'devops',
+  'cysec',
+  'data-analyst',
+];
+
+const List<String> kSkills = [
+  'flutter',
+  'dart',
+  'kotlin',
+  'java',
+  'javascript',
+  'typescript',
+  'c++',
+  'c',
+  'python',
+  'html/css',
+  'react.js',
+  'node.js',
+  'firebase',
+  'mongodb',
+  'sql',
+  'git/github',
+  'docker',
+  'postman',
+  'figma',
+  'tensorflow',
+];
