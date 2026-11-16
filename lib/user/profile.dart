@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:node/core/constants/skills.dart';
+import 'package:node/features/clusters/views/joined_clusters_screen.dart';
 import 'package:node/features/feed/providers/count_provider.dart';
 import 'package:node/features/auth/login.dart';
 import 'package:node/features/feed/views/connections.dart';
@@ -69,6 +70,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       setState(() {
         _updatingRoles = false;
       });
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Roles Updated'),
+          backgroundColor: Colors.blueAccent,
+          duration: Duration(milliseconds: 500),
+        ),
+      );
     } on FirebaseException catch (_) {
       if (mounted) {
         setState(() {
@@ -76,9 +85,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         });
       }
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Update Failed')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Update Failed'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
     }
   }
 
@@ -94,6 +106,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       setState(() {
         _updatingSkills = false;
       });
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Skills Updated'),
+          backgroundColor: Colors.blueAccent,
+          duration: Duration(milliseconds: 500),
+        ),
+      );
     } on FirebaseException catch (_) {
       if (mounted) {
         setState(() {
@@ -101,9 +121,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         });
       }
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Update Failed')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Update Failed'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
     }
   }
 
@@ -111,7 +134,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   void initState() {
     super.initState();
     _loadRolesAndSkills();
-    debugPrint('init -> roles: $selectedRoles');
   }
 
   late List<String> selectedRoles = [];
@@ -123,7 +145,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final savedCountAsync = ref.watch(savedPostsCountProvider);
     final userAsync = ref.watch(currentUserProvider);
     final totalStarsAsync = ref.watch(totalStarsEarnedProvider);
-    debugPrint('build -> roles: $selectedRoles');
     return userAsync.when(
       data: (user) {
         if (user == null) {
@@ -173,7 +194,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         children: [
                           Text('Select Your Roles '),
                           Spacer(),
-                          Text('selected ${selectedRoles.length} / 2'),
+                          Text('Selected  ${selectedRoles.length} / 2'),
                           Spacer(),
                           SizedBox(
                             height: 35,
@@ -205,7 +226,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         children: [
                           Text('Select Your Skills '),
                           Spacer(),
-                          Text('selected ${selectedSkills.length} / 10'),
+                          Text('Selected  ${selectedSkills.length} / 10'),
                           Spacer(),
                           SizedBox(
                             height: 35,
@@ -263,10 +284,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         ),
                         const SizedBox(width: 10),
 
-                        Text(
-                          'Joined Clusters',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => JoinedClustersScreen(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'Joined Clusters',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
                           ),
                         ),
                       ],

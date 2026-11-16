@@ -15,7 +15,6 @@ class UsersScreen extends ConsumerStatefulWidget {
 class _UsersScreenState extends ConsumerState<UsersScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     // ref.invalidate(connectionProvider);
   }

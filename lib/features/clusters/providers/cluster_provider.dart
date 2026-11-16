@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
+import 'package:node/features/nodes/providers/current_user_provider.dart';
 import 'package:node/shared/models/clusters.dart';
 
 final clusterProvider = StreamProvider<List<Cluster>>((ref) {
@@ -28,4 +29,25 @@ final filterClusterProvider = Provider<AsyncValue<List<Cluster>>>((ref) {
         )
         .toList();
   });
+});
+
+final joinedClustersProvider = FutureProvider.autoDispose<List<Cluster>>((
+  ref,
+) async {
+  final currentUserAsync = await ref.watch(currentUserProvider.future);
+
+  if (currentUserAsync == null || currentUserAsync.joinedClusters.isEmpty) {
+    return [];
+  }
+  final db = FirebaseFirestore.instance;
+  final docs = await Future.wait(
+    currentUserAsync.joinedClusters.map(
+      (id) => db.collection('clusters').doc(id).get(),
+    ),
+  );
+
+  return docs
+      .where((element) => element.exists && element.data() != null)
+      .map((e) => Cluster.fromFirestore(e))
+      .toList();
 });

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:node/features/auth/login.dart';
 import 'package:node/features/clusters/providers/cluster_provider.dart';
 import 'package:node/features/nodes/providers/current_user_provider.dart';
 import 'package:node/shared/widgets/cluster_card.dart';
@@ -19,25 +20,36 @@ class _ClustersScreenState extends ConsumerState<ClustersScreen> {
     final currUserAsync = ref.watch(currentUserProvider);
     return currUserAsync.when(
       data: (data) {
+        // not signed in or user doc missing: don't build the list
         if (data == null) {
           // not signed in or user doc missing: don't build the list
-          if (data == null) {
-            // not signed in or user doc missing: don't build the list
-            return const Scaffold(
-              body: Center(child: Text('Please sign in again.')),
-            );
-            // or redirect to LoginScreen with addPostFrameCallback, as on the profile screen
-          }
-          // WidgetsBinding.instance.addPostFrameCallback((_) {
-          //   if (!mounted) return;
-          //   Navigator.pushAndRemoveUntil(
-          //     context,
-          //     MaterialPageRoute(builder: (_) => const LoginScreen()),
-          //     (route) => false,
-          //   );
-          // });
-          // or redirect to LoginScreen with addPostFrameCallback, as on the profile screen
+          return Scaffold(
+            body: Center(
+              child: Column(
+                children: [
+                  Text('Please sign in again.'),
+                  SizedBox(height: 20),
+                  FilledButton(
+                    onPressed: () {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (!mounted) return;
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const LoginScreen(),
+                          ),
+                          (route) => false,
+                        );
+                      });
+                    },
+                    child: Text('Login'),
+                  ),
+                ],
+              ),
+            ),
+          );
         }
+
         return Scaffold(
           body: filterClusterAsync.when(
             data: (data2) {

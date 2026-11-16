@@ -5,6 +5,7 @@ import 'package:node/features/feed/providers/carousel_chip.dart';
 import 'package:node/features/feed/providers/filter_provider.dart';
 import 'package:node/features/feed/providers/posts_provider.dart';
 import 'package:node/shared/widgets/blog_card.dart';
+import 'package:node/shared/widgets/expand_blog_card.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -16,7 +17,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     ref.invalidate(postProvider);
   }
@@ -90,11 +90,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       );
                     } else {
                       final post = data[index] as Post;
-                      return BlogCard(
-                        key: ValueKey(
-                          '${post.postId}_${post.isStarredBy.length}_${post.isSavedBy.length}',
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ExpandBlogCard(post: post),
+                            ),
+                          );
+                        },
+                        child: BlogCard(
+                          key: ValueKey(
+                            '${post.postId}_${post.isStarredBy.length}_${post.isSavedBy.length}',
+                          ),
+                          post: post,
                         ),
-                        post: post,
                       );
                     }
                   },

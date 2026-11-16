@@ -152,21 +152,20 @@ class _ProfileBody extends StatelessWidget {
             const SizedBox(height: 20),
             const _SectionTitle('Links'),
             if (_has(user.github))
-              GestureDetector(
-                onTap: () {
+              _LinkRow(
+                icon: Amicons.remix_git_branch,
+                text: 'Github',
+                onPressed: () {
                   _openUrl(context, user.github!);
                 },
-                child: _LinkRow(
-                  icon: Amicons.remix_git_branch,
-                  text: user.github!,
-                ),
               ),
             if (_has(user.linkedin))
-              GestureDetector(
-                onTap: () {
+              _LinkRow(
+                icon: LucideIcons.link,
+                text: 'Linkedin',
+                onPressed: () {
                   _openUrl(context, user.linkedin!);
                 },
-                child: _LinkRow(icon: LucideIcons.link, text: user.linkedin!),
               ),
           ],
 
@@ -234,7 +233,12 @@ class _StatTile extends StatelessWidget {
 class _LinkRow extends StatelessWidget {
   final IconData icon;
   final String text;
-  const _LinkRow({required this.icon, required this.text});
+  final Function() onPressed;
+  const _LinkRow({
+    required this.icon,
+    required this.text,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -243,7 +247,12 @@ class _LinkRow extends StatelessWidget {
       children: [
         Icon(icon, size: 18),
         const SizedBox(width: 8),
-        Expanded(child: Text(text, overflow: TextOverflow.ellipsis)),
+        Expanded(
+          child: GestureDetector(
+            onTap: onPressed,
+            child: Text(text, overflow: TextOverflow.ellipsis),
+          ),
+        ),
       ],
     ),
   );
