@@ -1,5 +1,6 @@
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:node/features/nodes/views/connection_profile.dart';
 import 'package:node/shared/models/post.dart';
 
 class ExpandBlogCard extends StatefulWidget {
@@ -68,7 +69,17 @@ class _ExpandBlogCardState extends State<ExpandBlogCard> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Expanded(
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PublicProfileScreen(
+                                uid: widget.post.authorId,
+                              ),
+                            ),
+                          );
+                        },
                         child: Text(
                           author,
                           maxLines: 1,

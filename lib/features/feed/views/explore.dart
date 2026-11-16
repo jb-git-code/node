@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:node/shared/models/post.dart';
 import 'package:node/features/feed/providers/posts_provider.dart';
 import 'package:node/shared/widgets/blog_card.dart';
+import 'package:node/shared/widgets/expand_blog_card.dart';
 
 class ExploreScreen extends ConsumerStatefulWidget {
   const ExploreScreen({super.key});
@@ -80,11 +81,21 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                 child: ListView.builder(
                   itemCount: post.length,
                   itemBuilder: (context, index) {
-                    return BlogCard(
-                      key: ValueKey(
-                        '${post[index].postId}_${post[index].isStarredBy.length}_${post[index].isSavedBy.length}',
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ExpandBlogCard(post: post[index]),
+                          ),
+                        );
+                      },
+                      child: BlogCard(
+                        key: ValueKey(
+                          '${post[index].postId}_${post[index].isStarredBy.length}_${post[index].isSavedBy.length}',
+                        ),
+                        post: post[index],
                       ),
-                      post: post[index],
                     );
                   },
                 ),
