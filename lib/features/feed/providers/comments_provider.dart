@@ -8,6 +8,8 @@ final commentsProvider = FutureProvider.autoDispose
           .collection('blogs')
           .doc(blogId)
           .collection('comments')
+          .orderBy('createdAt', descending: true)
+          .limit(50)
           .get();
 
       final data = commentSnaps.docs;
