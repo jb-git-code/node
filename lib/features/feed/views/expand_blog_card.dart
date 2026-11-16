@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:node/core/services/comment_service.dart';
 import 'package:node/features/feed/providers/comments_provider.dart';
 import 'package:node/features/nodes/views/connection_profile.dart';
@@ -21,7 +20,6 @@ class ExpandBlogCard extends ConsumerStatefulWidget {
 
 class _ExpandBlogCardState extends ConsumerState<ExpandBlogCard> {
   final _controller = TextEditingController();
-  bool _saved = false;
   bool _sending = false;
 
   @override
@@ -120,36 +118,26 @@ class _ExpandBlogCardState extends ConsumerState<ExpandBlogCard> {
                 ),
                 const SizedBox(height: 12),
                 const Divider(),
-
-                // Actions
-                Row(
-                  children: [
-                    TextButton.icon(
-                      onPressed: () => setState(() => _saved = !_saved),
-                      style: TextButton.styleFrom(
-                        foregroundColor: _saved
-                            ? colors.onPrimary
-                            : colors.onSurface,
-                        backgroundColor: _saved ? colors.primary : null,
-                      ),
-                      icon: const Icon(LucideIcons.star, size: 18),
-                      label: Text(_saved ? 'Saved' : 'Save'),
-                    ),
-                    const Spacer(),
-                    TextButton.icon(
-                      onPressed: () => Navigator.of(context).maybePop(),
-                      icon: const Icon(LucideIcons.chevronDownSquare, size: 18),
-                      label: const Text('Collapse'),
-                    ),
-                  ],
-                ),
-                const Divider(),
                 const SizedBox(height: 12),
 
                 // Description
-                Text(
-                  widget.post.description,
-                  style: text.bodyLarge?.copyWith(height: 1.6),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: widget.post.description[0]
+                            .toUpperCase(), // Or: myParagraph[0].toUpperCase()
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 28,
+                        ),
+                      ),
+                      TextSpan(
+                        text: widget.post.description.substring(1),
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
                 ),
 
                 const SizedBox(height: 24),
