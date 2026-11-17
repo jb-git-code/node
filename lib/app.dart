@@ -11,6 +11,7 @@ import 'package:node/features/nodes/views/compose.dart';
 import 'package:node/features/feed/views/explore.dart';
 import 'package:node/features/feed/views/home.dart';
 import 'package:node/user/about.dart';
+import 'package:node/user/notifications_listener_provider.dart';
 import 'package:node/user/profile.dart';
 import 'package:node/user/settings.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -175,6 +176,7 @@ class _AppState extends ConsumerState<App> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(notificationListenerProvider);
     return Scaffold(
       // extendBody: true,
       appBar: AppBar(

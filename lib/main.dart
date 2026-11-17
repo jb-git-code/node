@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:node/core/constants/navigation.dart';
 import 'package:node/core/services/notification_service.dart';
 import 'package:node/core/themes/app_theme.dart';
 import 'package:node/features/auth/auth_gate.dart';
@@ -27,6 +28,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   Widget build(BuildContext context) {
     final themePro = ref.watch(themeModeProvider);
     return MaterialApp(
+      navigatorKey: navigatorKey,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: themePro,

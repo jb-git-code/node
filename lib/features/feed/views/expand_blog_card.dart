@@ -36,6 +36,8 @@ class _ExpandBlogCardState extends ConsumerState<ExpandBlogCard> {
           .read(commentServiceProvider)
           .addComment(
             blogId: widget.post.postId,
+            nodeAuthorId: widget.post.authorId,
+            nodeTitle: widget.post.title,
             body: _controller.text,
             user: user,
           );
@@ -43,6 +45,7 @@ class _ExpandBlogCardState extends ConsumerState<ExpandBlogCard> {
       if (!mounted) return;
       FocusScope.of(context).unfocus();
       ref.invalidate(commentsProvider(widget.post.postId));
+      debugPrint('comment posted');
     } catch (e) {
       debugPrint('addComment failed: $e');
       if (mounted) {

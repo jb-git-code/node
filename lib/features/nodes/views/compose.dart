@@ -1,4 +1,3 @@
-
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -105,7 +104,6 @@ class _ComposeBlogState extends ConsumerState<ComposeBlog> {
     }
   }
 
-
   String? selectedCategory;
 
   @override
@@ -114,7 +112,6 @@ class _ComposeBlogState extends ConsumerState<ComposeBlog> {
     _title.dispose();
     _des.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
