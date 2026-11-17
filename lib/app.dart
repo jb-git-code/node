@@ -1,3 +1,4 @@
+import 'package:amicons/amicons.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:node/features/nodes/providers/current_user_provider.dart';
 import 'package:node/features/nodes/views/compose.dart';
 import 'package:node/features/feed/views/explore.dart';
 import 'package:node/features/feed/views/home.dart';
+import 'package:node/features/notifications/views/noti_screen.dart';
 import 'package:node/user/about.dart';
 import 'package:node/user/notifications_listener_provider.dart';
 import 'package:node/user/profile.dart';
@@ -183,6 +185,14 @@ class _AppState extends ConsumerState<App> {
         title: Text('Node'),
         centerTitle: false,
         toolbarHeight: 36,
+        leading: IconButton(
+          icon: Icon(Amicons.vuesax_notification_status_fill),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => NotificationsScreen()),
+            );
+          },
+        ),
         actions: [
           PopupMenuButton<String>(
             icon: const Icon(LucideIcons.moreVertical),

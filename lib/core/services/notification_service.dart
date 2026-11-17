@@ -9,27 +9,6 @@ class NotificationService {
   static final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
 
-  static Future<void> _onNotificationTap(NotificationResponse response) async {
-    final nodeId = response.payload;
-    if (nodeId == null || nodeId.isEmpty) return;
-
-    try {
-      final doc = await FirebaseFirestore.instance
-          .collection('nodes') // use your actual posts collection name
-          .doc(nodeId)
-          .get();
-      if (!doc.exists || doc.data() == null) return;
-
-      final post = Post.fromFirestore(doc); // use your Post constructor
-
-      navigatorKey.currentState?.push(
-        MaterialPageRoute(builder: (_) => ExpandBlogCard(post: post)),
-      );
-    } catch (e) {
-      debugPrint('Notification tap failed: $e');
-    }
-  }
-
   static Future<void> init() async {
     const androidSettings = AndroidInitializationSettings(
       '@mipmap/ic_launcher',
@@ -113,5 +92,29 @@ class NotificationService {
       notificationDetails: details,
       payload: payload,
     );
+  }
+
+  static Future<void> openPostById(String nodeId) async {
+    if (nodeId.isEmpty) return;
+    try {
+      final doc = await FirebaseFirestore.instance
+          .collection('nodes')
+          .doc(nodeId)
+          .get();
+      if (!doc.exists || doc.data() == null) return;
+
+      final post = Post.fromFirestore(doc); // your Post constructor
+      navigatorKey.currentState?.push(
+        MaterialPageRoute(builder: (_) => ExpandBlogCard(post: post)),
+      );
+    } catch (e) {
+      debugPrint('openPostById failed: $e');
+    }
+  }
+
+  static Future<void> _onNotificationTap(NotificationResponse response) async {
+    final nodeId = response.payload;
+    if (nodeId == null) return;
+    await openPostById(nodeId);
   }
 }
