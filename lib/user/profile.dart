@@ -164,218 +164,217 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           appBar: AppBar(title: Text('Profile')),
           body: Padding(
             padding: EdgeInsetsGeometry.all(16),
-            child: Column(
-              children: [
-                CompletionProfileCard(
-                  email: user!.email,
-                  name: user.name,
-                  handle: user.name,
-                  createdCountAsync: createdCountAsync,
-                  savedCountAsync: savedCountAsync,
-                  totalStarsAsync: totalStarsAsync,
-                ),
-                const SizedBox(height: 40),
-                switch (_loadState) {
-                  LoadState.loading => const Center(
-                    child: CircularProgressIndicator(),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: [
+                  CompletionProfileCard(
+                    email: user!.email,
+                    name: user.name,
+                    handle: user.name,
+                    createdCountAsync: createdCountAsync,
+                    savedCountAsync: savedCountAsync,
+                    totalStarsAsync: totalStarsAsync,
                   ),
-                  LoadState.failed => Column(
-                    children: [
-                      const Text("Couldn't load your skills."),
-                      TextButton(
-                        onPressed: _loadRolesAndSkills,
-                        child: const Text('Retry'),
-                      ),
-                    ],
-                  ),
-                  LoadState.loaded => Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text('Select Your Roles '),
-                          Spacer(),
-                          Text('Selected  ${selectedRoles.length} / 2'),
-                          Spacer(),
-                          SizedBox(
-                            height: 35,
-                            width: 100,
-                            child: (_updatingRoles)
-                                ? Center(
-                                    child: const CircularProgressIndicator(),
-                                  )
-                                : FilledButton(
-                                    onPressed: _updateRoles,
-                                    child: Text('Update'),
-                                  ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      ChipPicker(
-                        options: kRolesOptions,
-                        selected: selectedRoles,
-                        max: 2,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedRoles = value;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Text('Select Your Skills '),
-                          Spacer(),
-                          Text('Selected  ${selectedSkills.length} / 10'),
-                          Spacer(),
-                          SizedBox(
-                            height: 35,
-                            width: 100,
-                            child: (_updatingSkills)
-                                ? Center(
-                                    child: const CircularProgressIndicator(),
-                                  )
-                                : FilledButton(
-                                    style: FilledButton.styleFrom(
-                                      fixedSize: const Size(100, 50),
-                                    ),
-                                    onPressed: _updateSkills,
-                                    child: Text('Update'),
-                                  ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      ChipPicker(
-                        options: kSkills,
-                        selected: selectedSkills,
-                        max: 7,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedSkills = value;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                    ],
-                  ),
-                },
-
-                // Profile Data
-                GestureDetector(
-                  onTap: () {
-                    // navigation to joined clusters page
-                  },
-                  child: Container(
-                    height: 60,
-                    width: MediaQuery.of(context).size.width * .90,
-                    decoration: BoxDecoration(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(15),
+                  const SizedBox(height: 40),
+                  switch (_loadState) {
+                    LoadState.loading => const Center(
+                      child: CircularProgressIndicator(),
                     ),
-                    child: Row(
+                    LoadState.failed => Column(
                       children: [
-                        const SizedBox(width: 20),
-                        Icon(
-                          LucideIcons.cuboid,
-                          color: Theme.of(context).colorScheme.primary,
+                        const Text("Couldn't load your skills."),
+                        TextButton(
+                          onPressed: _loadRolesAndSkills,
+                          child: const Text('Retry'),
                         ),
-                        const SizedBox(width: 10),
-
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => JoinedClustersScreen(),
-                              ),
-                            );
+                      ],
+                    ),
+                    LoadState.loaded => Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text('Select Roles '),
+                            Spacer(),
+                            Text('Selected  ${selectedRoles.length} / 2'),
+                            Spacer(),
+                            SizedBox(
+                              height: 35,
+                              width: 40,
+                              child: (_updatingRoles)
+                                  ? Center(
+                                      child: const CircularProgressIndicator(),
+                                    )
+                                  : IconButton(
+                                      icon: Icon(
+                                        Icons.upload,
+                                        color: Colors.blueAccent,
+                                      ),
+                                      onPressed: _updateRoles,
+                                    ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        ChipPicker(
+                          options: kRolesOptions,
+                          selected: selectedRoles,
+                          max: 2,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedRoles = value;
+                            });
                           },
-                          child: Text(
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Text('Select Skills '),
+                            Spacer(),
+                            Text('Selected  ${selectedSkills.length} / 10'),
+                            Spacer(),
+                            SizedBox(
+                              height: 35,
+                              width: 40,
+                              child: (_updatingSkills)
+                                  ? Center(
+                                      child: const CircularProgressIndicator(),
+                                    )
+                                  : IconButton(
+                                      icon: Icon(Icons.upload),
+                                      onPressed: _updateSkills,
+                                      color: Colors.blueAccent,
+                                    ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        ChipPicker(
+                          options: kSkills,
+                          selected: selectedSkills,
+                          max: 10,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedSkills = value;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
+                  },
+
+                  // Profile Data
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => JoinedClustersScreen(),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: 60,
+                      width: MediaQuery.of(context).size.width * .90,
+                      decoration: BoxDecoration(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.surfaceContainerHighest,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Row(
+                        children: [
+                          const SizedBox(width: 20),
+                          Icon(
+                            LucideIcons.cuboid,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          const SizedBox(width: 10),
+
+                          Text(
                             'Joined Clusters',
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => UsersScreen()),
-                    );
-                  },
-                  child: Container(
-                    height: 60,
-                    width: MediaQuery.of(context).size.width * .90,
-                    decoration: BoxDecoration(
-                      color: Theme.of(
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
                         context,
-                      ).colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 20),
-                        Icon(
-                          LucideIcons.network,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          'Edges',
-                          style: TextStyle(
+                        MaterialPageRoute(builder: (context) => UsersScreen()),
+                      );
+                    },
+                    child: Container(
+                      height: 60,
+                      width: MediaQuery.of(context).size.width * .90,
+                      decoration: BoxDecoration(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.surfaceContainerHighest,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Row(
+                        children: [
+                          const SizedBox(width: 20),
+                          Icon(
+                            LucideIcons.network,
                             color: Theme.of(context).colorScheme.primary,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 10),
+                          Text(
+                            'Edges',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SavedNodes()),
-                    );
-                  },
-                  child: Container(
-                    height: 60,
-                    width: MediaQuery.of(context).size.width * .90,
-                    decoration: BoxDecoration(
-                      color: Theme.of(
+                  const SizedBox(height: 20),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
                         context,
-                      ).colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 20),
-                        Icon(
-                          LucideIcons.bookmark,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          'Saved Nodes',
-                          style: TextStyle(
+                        MaterialPageRoute(builder: (context) => SavedNodes()),
+                      );
+                    },
+                    child: Container(
+                      height: 60,
+                      width: MediaQuery.of(context).size.width * .90,
+                      decoration: BoxDecoration(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.surfaceContainerHighest,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Row(
+                        children: [
+                          const SizedBox(width: 20),
+                          Icon(
+                            LucideIcons.bookmark,
                             color: Theme.of(context).colorScheme.primary,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 10),
+                          Text(
+                            'Saved Nodes',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
