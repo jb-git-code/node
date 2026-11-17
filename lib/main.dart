@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:node/core/services/notification_service.dart';
 import 'package:node/core/themes/app_theme.dart';
 import 'package:node/features/auth/auth_gate.dart';
 import 'package:node/firebase_options.dart';
@@ -8,7 +9,9 @@ import 'package:node/core/themes/providers/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.init();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(ProviderScope(child: const MyApp()));
 }
 

@@ -1,3 +1,4 @@
+
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -104,29 +105,6 @@ class _ComposeBlogState extends ConsumerState<ComposeBlog> {
     }
   }
 
-  // void _tapAddNode() async {
-  //   LoadingOverlay.show(context);
-  //   try {
-  //     addNode();
-  //     Future.delayed(Duration(seconds: 2));
-  //     if (context.mounted) {
-  //       LoadingOverlay.hide(context);
-  //     }
-
-  //     if (context.mounted) {
-  //       Navigator.of(
-  //         context,
-  //       ).push(MaterialPageRoute(builder: (context) => const App()));
-  //     }
-  //   } catch (e) {
-  //     if (context.mounted) {
-  //       LoadingOverlay.hide(context);
-  //       ScaffoldMessenger.of(
-  //         context,
-  //       ).showSnackBar(SnackBar(content: Text('Error: $e')));
-  //     }
-  //   }
-  // }
 
   String? selectedCategory;
 
@@ -137,40 +115,6 @@ class _ComposeBlogState extends ConsumerState<ComposeBlog> {
     _des.dispose();
   }
 
-  // void _insertMarkdown(String prefix, String suffix) {
-  //   final text = _des.text;
-  //   final selection = _des.selection;
-
-  //   if (selection.baseOffset == -1) return; // No cursor active
-
-  //   final selectedText = selection.textInside(text);
-  //   final newText = text.replaceRange(
-  //     selection.start,
-  //     selection.end,
-  //     '$prefix$selectedText$suffix',
-  //   );
-
-  //   _des.value = TextEditingValue(
-  //     text: newText,
-  //     selection: TextSelection.collapsed(
-  //       offset: selection.start + prefix.length + selectedText.length,
-  //     ),
-  //   );
-  // }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // Initialize the live-rendering controller
-  //   _des = MarkdownLiveController(text: '');
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     if (mounted) {
-  //       setState(() {
-  //         _isEditorReady = true;
-  //       });
-  //     }
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -218,8 +162,8 @@ class _ComposeBlogState extends ConsumerState<ComposeBlog> {
               ),
               const SizedBox(height: 10),
               buildCategories(context),
-              const SizedBox(height: 10),
               // description
+              const SizedBox(height: 10),
               TextField(
                 controller: _des,
                 decoration: InputDecoration(
@@ -243,7 +187,7 @@ class _ComposeBlogState extends ConsumerState<ComposeBlog> {
         child: Wrap(
           spacing:
               MediaQuery.of(context).size.width *
-              0.04, // Gap between chips horizontally
+              0.03, // Gap between chips horizontally
           runSpacing: 8, // Gap between chips vertically
           children: _categories.map((category) {
             final isSelected = (selectedCategory == category);
