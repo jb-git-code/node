@@ -3,6 +3,7 @@ import 'package:amicons/amicons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:node/core/constants/navigation.dart';
 import 'package:node/features/nodes/providers/connection_user_provider.dart';
 import 'package:node/shared/models/user.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -170,7 +171,7 @@ class _ProfileBody extends StatelessWidget {
           ],
 
           // Clusters (respects privacy)
-          if (user.showClusters) ...[
+          if (user.showClusters && kClustersScreen) ...[
             const SizedBox(height: 20),
             const _SectionTitle('Clusters'),
             Container(

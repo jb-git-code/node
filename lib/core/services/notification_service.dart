@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:node/core/constants/navigation.dart';
+import 'package:node/core/services/post_repo.dart';
 import 'package:node/features/feed/views/expand_blog_card.dart';
 import 'package:node/shared/models/post.dart';
 
@@ -94,27 +95,49 @@ class NotificationService {
     );
   }
 
-  static Future<void> openPostById(String nodeId) async {
-    if (nodeId.isEmpty) return;
-    try {
-      final doc = await FirebaseFirestore.instance
-          .collection('nodes')
-          .doc(nodeId)
-          .get();
-      if (!doc.exists || doc.data() == null) return;
+  static Future<void> openPostById(
+    String nodeId, {
+    required NavigatorState navigator,
+  }) async {
+    // 1. Try local first
+    var post = await PostRepo.getPostById(nodeId);
 
-      final post = Post.fromFirestore(doc); // your Post constructor
-      navigatorKey.currentState?.push(
-        MaterialPageRoute(builder: (_) => ExpandBlogCard(post: post)),
-      );
-    } catch (e) {
-      debugPrint('openPostById failed: $e');
+    // 2. Fall back to remote
+    if (post == null) {
+      debugPrint('openPostById: not found locally, fetching remotely...');
+      try {
+        final doc = await FirebaseFirestore.instance
+            .collection('nodes')
+            .doc(nodeId)
+            .get();
+        debugPrint('openPostById: nodeId=$nodeId exists=${doc.exists}');
+        if (!doc.exists || doc.data() == null) return;
+
+        post = Post.fromFirestore(doc);
+      } catch (e, st) {
+        debugPrint('openPostById failed: $e\n$st');
+      } // or a Supabase/Firestore query
     }
+
+    if (post == null) {
+      debugPrint('openPostById: post not found anywhere: $nodeId');
+      // optionally show a SnackBar: "Post no longer available"
+      return;
+    }
+
+    navigator.push(
+      MaterialPageRoute(builder: (_) => ExpandBlogCard(post: post!)),
+    );
   }
 
   static Future<void> _onNotificationTap(NotificationResponse response) async {
     final nodeId = response.payload;
-    if (nodeId == null) return;
-    await openPostById(nodeId);
+    debugPrint('nodeId > $nodeId');
+    if (nodeId == null || nodeId.isEmpty) return;
+
+    final navigator = navigatorKey.currentState;
+    if (navigator == null) return;
+
+    await openPostById(nodeId, navigator: navigator);
   }
 }

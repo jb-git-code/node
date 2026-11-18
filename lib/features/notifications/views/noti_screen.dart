@@ -84,6 +84,7 @@ class _NotifGroupTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final notiService =
     final latest = group.first;
     final hasUnread = group.any((n) => !n.read);
 
@@ -117,7 +118,14 @@ class _NotifGroupTile extends StatelessWidget {
               ),
             )
           : null,
-      onTap: () => NotificationService.openPostById(latest.nodeId),
+      onTap: () async {
+        print('tapped');
+        print('node id > ${latest.nodeId}');
+        await NotificationService.openPostById(
+          latest.nodeId,
+          navigator: Navigator.of(context),
+        );
+      },
     );
   }
 }

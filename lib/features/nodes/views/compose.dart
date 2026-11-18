@@ -115,61 +115,73 @@ class _ComposeBlogState extends ConsumerState<ComposeBlog> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * .85,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Text(
-                'Share Experience, Connect a node',
-                style: Theme.of(context).textTheme.displayMedium,
-              ),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  Expanded(
-                    // title
-                    child: TextField(
-                      // maxLength: 40,
-                      controller: _title,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        hintText: 'Title',
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  TextButton.icon(
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStatePropertyAll(
-                        Colors.lightGreenAccent,
-                      ),
-                      foregroundColor: WidgetStatePropertyAll(Colors.black),
-                    ),
-                    onPressed: addNode,
-                    label: Text('Node'),
-                    icon: const Icon(LucideIcons.send),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              buildCategories(context),
-              // description
-              const SizedBox(height: 10),
-              TextField(
-                controller: _des,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(borderRadius: AppUI.cardRadius),
-                  hintText: 'Description',
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * .85,
+
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          padding: EdgeInsets.only(
+            // left: 16,
+            // right: 16,
+            // keyboard height + room for the floating bar
+            bottom: keyboardHeight + 100,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16.0, right: 16, top: 8),
+            child: Column(
+              children: [
+                Text(
+                  'Share Experience, Connect a node',
+                  style: Theme.of(context).textTheme.displayMedium,
                 ),
-                maxLines: 25,
-              ),
-            ],
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Expanded(
+                      // title
+                      child: TextField(
+                        // maxLength: 40,
+                        controller: _title,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          hintText: 'Title',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    TextButton.icon(
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(
+                          Colors.lightGreenAccent,
+                        ),
+                        foregroundColor: WidgetStatePropertyAll(Colors.black),
+                      ),
+                      onPressed: addNode,
+                      label: Text('Node'),
+                      icon: const Icon(LucideIcons.send),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                buildCategories(context),
+                // description
+                const SizedBox(height: 10),
+                TextField(
+                  controller: _des,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(borderRadius: AppUI.cardRadius),
+                    hintText: 'Description',
+                  ),
+                  maxLines: 25,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -184,7 +196,7 @@ class _ComposeBlogState extends ConsumerState<ComposeBlog> {
         child: Wrap(
           spacing:
               MediaQuery.of(context).size.width *
-              0.03, // Gap between chips horizontally
+              0.01, // Gap between chips horizontally
           runSpacing: 8, // Gap between chips vertically
           children: _categories.map((category) {
             final isSelected = (selectedCategory == category);
