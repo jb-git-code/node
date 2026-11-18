@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:node/core/constants/navigation.dart';
 import 'package:node/core/constants/skills.dart';
 import 'package:node/features/clusters/views/joined_clusters_screen.dart';
 import 'package:node/features/feed/providers/count_provider.dart';
@@ -264,44 +265,45 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                   },
 
-                  // Profile Data
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => JoinedClustersScreen(),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      height: 60,
-                      width: MediaQuery.of(context).size.width * .90,
-                      decoration: BoxDecoration(
-                        color: Theme.of(
+                  // joined clusters
+                  if (kClustersScreen)
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
                           context,
-                        ).colorScheme.surfaceContainerHighest,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 20),
-                          Icon(
-                            LucideIcons.cuboid,
-                            color: Theme.of(context).colorScheme.primary,
+                          MaterialPageRoute(
+                            builder: (context) => JoinedClustersScreen(),
                           ),
-                          const SizedBox(width: 10),
-
-                          Text(
-                            'Joined Clusters',
-                            style: TextStyle(
+                        );
+                      },
+                      child: Container(
+                        height: 60,
+                        width: MediaQuery.of(context).size.width * .90,
+                        decoration: BoxDecoration(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.surfaceContainerHighest,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 20),
+                            Icon(
+                              LucideIcons.cuboid,
                               color: Theme.of(context).colorScheme.primary,
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 10),
+
+                            Text(
+                              'Joined Clusters',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
                   const SizedBox(height: 20),
 
                   GestureDetector(

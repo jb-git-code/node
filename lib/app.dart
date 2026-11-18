@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:node/core/constants/navigation.dart';
 import 'package:node/features/auth/login.dart';
 import 'package:node/features/clusters/views/clusters_screen.dart';
 import 'package:node/features/nodes/providers/current_user_provider.dart';
@@ -178,8 +179,10 @@ class _AppState extends ConsumerState<App> {
 
   @override
   Widget build(BuildContext context) {
+    final isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
     ref.watch(notificationListenerProvider);
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       // extendBody: true,
       appBar: AppBar(
         title: Text('Node'),
@@ -262,57 +265,62 @@ class _AppState extends ConsumerState<App> {
         ],
       ),
       body: BottomBar(
-        layout: const BottomBarLayout.adaptive(maxWidth: 300),
+        layout: BottomBarLayout.adaptive(
+          maxWidth: (kClustersScreen) ? 300 : 225,
+        ),
         body: IndexedStack(
           index: _currentIndex,
           children: [
             HomeScreen(),
             ExploreScreen(),
             ComposeBlog(),
-            ClustersScreen(),
+            if (kClustersScreen) ClustersScreen(),
           ],
         ),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[800],
-            borderRadius: BorderRadius.circular(28),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadiusGeometry.circular(28),
-            child: BottomNavigationBar(
-              currentIndex: _currentIndex,
-              onTap: (index) {
-                changeTab(index);
-              },
+        child: (isKeyboardOpen)
+            ? SizedBox.shrink()
+            : Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[800],
+                  borderRadius: BorderRadius.circular(28),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadiusGeometry.circular(28),
+                  child: BottomNavigationBar(
+                    currentIndex: _currentIndex,
+                    onTap: (index) {
+                      changeTab(index);
+                    },
 
-              backgroundColor: Colors.transparent,
-              selectedItemColor: Colors.lightGreenAccent,
-              unselectedItemColor: Colors.white,
-              elevation: 0,
-              showSelectedLabels: false,
-              showUnselectedLabels: false,
-              type: BottomNavigationBarType.fixed,
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(LucideIcons.home),
-                  label: 'Home',
+                    backgroundColor: Colors.transparent,
+                    selectedItemColor: Colors.lightGreenAccent,
+                    unselectedItemColor: Colors.white,
+                    elevation: 0,
+                    showSelectedLabels: false,
+                    showUnselectedLabels: false,
+                    type: BottomNavigationBarType.fixed,
+                    items: [
+                      BottomNavigationBarItem(
+                        icon: Icon(LucideIcons.home),
+                        label: 'Home',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(LucideIcons.compass),
+                        label: 'Mentor',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(LucideIcons.plusSquare),
+                        label: 'Compose',
+                      ),
+                      if (kClustersScreen)
+                        BottomNavigationBarItem(
+                          icon: Icon(LucideIcons.boxes),
+                          label: 'Clusters',
+                        ),
+                    ],
+                  ),
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(LucideIcons.compass),
-                  label: 'Mentor',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(LucideIcons.plusSquare),
-                  label: 'Compose',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(LucideIcons.boxes),
-                  label: 'Clusters',
-                ),
-              ],
-            ),
-          ),
-        ),
+              ),
       ),
     );
   }
